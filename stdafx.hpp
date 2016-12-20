@@ -27,7 +27,7 @@ void doOutlineDraw();//Read colorOptimizedImage, output to manDrawOutline.
 void doFinalAnalyse();//Read manDrawOutline, output to resultImage.
 namespace cimg_library{
 class cimg_color;
-extern uint16_t colorCompare(const cimg_color &colorA, const cimg_color &colorB);
+extern uint16_t colorCompare(const cimg_color &colorA, const cimg_color &colorB);//The greater it returns, the less similar input colors are.
 //Public function
 class cimg_color
 {
