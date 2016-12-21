@@ -13,9 +13,6 @@ namespace qLibrary{
     }
 }
 
-inline void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline)
-{
-    qLibrary::Graphics::checkOutline(colorOptimizedImage,manDrawOutline);
-}
+void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline);
 
 #endif
