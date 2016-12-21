@@ -7,6 +7,7 @@
 
 #include <opencv2/core.hpp>
 #define cimg_plugin1 "cvMat.h"
+#include "../stdafx.hpp"
 
 namespace qLibrary{
     namespace Graphics{
@@ -15,7 +16,7 @@ namespace qLibrary{
 }
 using cv::RotatedRect;
 using cv::Rect;
-bool doOpencvAnalyse()
+bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,struct analyseResultStruct &analyseResult)//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 {
     auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(colorOptimizedImage.get_MAT());
     auto scoreRotatedRect = [](const RotatedRect &toJudge, int originHeight) -> uint16_t {
