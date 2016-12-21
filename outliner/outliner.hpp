@@ -3,7 +3,6 @@
 
 #include "../stdafx.hpp"
 
-
 namespace qLibrary{
     namespace Graphics{
         const int MIN_DIVERGENCE = 64;
@@ -12,7 +11,11 @@ namespace qLibrary{
         bool checkOutlineAt(cimg_library::CImg<unsigned char> &origimg,cimg_library::CImg<unsigned char> &outimg,int xpos,int ypos); // if succeded, make that point BLACK and return TRUE
         cimg_library::CImg<unsigned char> checkOutline(cimg_library::CImg<unsigned char> &cimg);
     }
+}
 
+inline void doOutlineDraw()
+{
+    manDrawOutline = qLibrary::Graphics::checkOutline(colorOptimizedImage);
 }
 
 #endif

@@ -58,6 +58,7 @@ int main(int argv_size, const char **args)
                 return 0;
             }
         }
+        putHatOn();
     }
     if(outputFileName.empty())
         outputFileName = "output.png";

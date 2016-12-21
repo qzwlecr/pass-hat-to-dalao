@@ -13,18 +13,25 @@ cimg_library::CImg<unsigned char> originImage,
     colorOptimizedImage,
     manDrawOutline;
 //Pass result
-cimg_library::CImg<unsigned char> resultImage;
-/* **** Note
-注意,很多CImg的函数有两个版本；
-不带get_前缀的函数(例如blur)是直接处理传入的图像对象；
-带get_前缀的函数（例如get_blur）会将处理后的图像对象返回（需要额外的像素值拷贝操作,例如image = image.get_blur(2.5)）；
-*/
+struct
+{
+    bool bSuccess;
+    struct {
+        struct point {
+            uint16_t x;
+            uint16_t y;
+        };
+        point lineBegin;
+        point lineEnd;
+    } bottomLine;
+} analyseResult;
 //Prototypes of function (to complete)
 //Assume thar 'originImage' is initialized properly.
 void doColorOptimize();//Read originImage, output to colorOptimizedImage.
-bool doOpencvAnalyse();//Read colorOptimizedImage, if success, return true and output to resultImage, else, return false and do nothing to resultImage.
-void doOutlineDraw();//Read colorOptimizedImage, output to manDrawOutline.
-bool doFinalAnalyse();//Read manDrawOutline, output to resultImage. If can't recoginize given image, return false.
+bool doOpencvAnalyse();//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
+inline void doOutlineDraw();//Read colorOptimizedImage, output to manDrawOutline.
+bool doFinalAnalyse();//Read manDrawOutline, output to analyseResult. If can't recoginize given image, return false.
+void putHatOn();//Select an hat and put it to originImage(according to analyseResult).
 namespace cimg_library{
 class cimg_color;
 namespace recolic_private_namespace{
@@ -51,5 +58,4 @@ namespace recolic_private_namespace{
     }
 }
 }
-
 #endif // STDAFX_HPP_INCLUDED
