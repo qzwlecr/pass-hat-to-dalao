@@ -35,15 +35,11 @@ class cimg_color
 {
 public:
     cimg_color(unsigned char r=0, unsigned char g=0, unsigned char b=0) {color_dat={r,g,b};}
-    cimg_color(const cimg_color &tcp) : color_dat(tcp.color_dat) {}
-    cimg_color(cimg_color &&) = delete;
     cimg_color(const unsigned char *tcp) {for(size_t c=0;c<3;++c) color_dat[c]=tcp[c];}
     operator unsigned char *()
     {
         return color_dat.data();
     }
-    operator=(const cimg_color &tcp){if(*this==tcp)return *this;else color_dat=tcp.color_dat;return *this;}
-    operator=(cimg_color &&) = delete;
     uint16_t operator-(const cimg_color &another) {return recolic_private_namespace::colorCompare(*this, another);}
     std::array<unsigned char, 3> color_dat;
 };
