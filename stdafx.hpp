@@ -27,12 +27,13 @@ void doOutlineDraw();//Read colorOptimizedImage, output to manDrawOutline.
 void doFinalAnalyse();//Read manDrawOutline, output to resultImage.
 namespace cimg_library{
 class cimg_color;
-extern uint16_t colorCompare(const cimg_color &colorA, const cimg_color &colorB);//The greater it returns, the less similar input colors are.
+namespace recolic_private_namespace{
+inline uint16_t colorCompare(const cimg_color &colorA, const cimg_color &colorB);//The greater it returns, the less similar input colors are.
+}
 //Public function
 class cimg_color
 {
 public:
-    friend uint16_t colorCompare(const cimg_color &, const cimg_color &);
     cimg_color(unsigned char r, unsigned char g, unsigned char b) {color_dat={r,g,b};}
     cimg_color() = delete;
     cimg_color(const cimg_color &tcp) : color_dat(tcp.color_dat) {}
@@ -42,9 +43,16 @@ public:
     {
         return color_dat.data();
     }
-    uint16_t operator-(const cimg_color &another) {return colorCompare(*this, another);}
+    uint16_t operator-(const cimg_color &another) {return recolic_private_namespace::colorCompare(*this, another);}
     std::array<unsigned char, 3> color_dat;
 };
+namespace recolic_private_namespace{
+    inline uint16_t colorCompare(const cimg_color &colorA, const cimg_color &colorB)
+    {
+        auto getMinusAbs = [](unsigned char a, unsigned char b) -> uint16_t {return a>b?a-b:b-a;}
+        return getMinusAbs(colorA.color_dat[0], colorB.color_dat[0])+getMinusAbs(colorA.color_dat[1], colorB.color_dat[1])+getMinusAbs(colorA.color_dat[2], colorB.color_dat[2]);
+    }
+}
 }
 
 #endif // STDAFX_HPP_INCLUDED
