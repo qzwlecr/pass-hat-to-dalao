@@ -29,15 +29,13 @@ namespace qLibrary{
             }
             return false;
         }
-        cimg_library::CImg<unsigned char> checkOutline(cimg_library::CImg<unsigned char> &cimg){
+        void checkOutline(cimg_library::CImg<unsigned char> &cimg,cimg_library::CImg<unsigned char> &outimg){
             int origwidth=cimg.width(),origlength=cimg.height();
-            cimg_library::CImg<unsigned char> outimg(origwidth,origlength,1,3,0);
             for(int iterx=0;iterx<origwidth;iterx++){
                 for(int itery=0;itery<origlength;itery++){
                     checkOutlineAt(cimg,outimg,iterx,itery);
                 }
             }
-            return outimg;
         }
     }
 }
