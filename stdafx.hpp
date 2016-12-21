@@ -13,7 +13,7 @@ extern cimg_library::CImg<unsigned char> originImage,
     colorOptimizedImage,
     manDrawOutline;
 //Pass result
-extern struct
+struct _sResult
 {
     bool bSuccess;
     struct {
@@ -24,7 +24,8 @@ extern struct
         point lineBegin;
         point lineEnd;
     } bottomLine;
-} analyseResult;
+}
+extern _sResult analyseResult;
 //Prototypes of function (to complete)
 //Assume thar 'originImage' is initialized properly.
 void doColorOptimize();//Read originImage, output to colorOptimizedImage.
