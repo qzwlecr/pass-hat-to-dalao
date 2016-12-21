@@ -9,9 +9,7 @@
 #include <array>
 //Global Variables
 //These references are guaranteed to be valid while calling your modules.
-cimg_library::CImg<unsigned char> originImage,
-    colorOptimizedImage,
-    manDrawOutline;
+
 //Pass result
 struct
 {
@@ -27,7 +25,7 @@ struct
 } analyseResult;
 //Prototypes of function (to complete)
 //Assume thar 'originImage' is initialized properly.
-void doColorOptimize();//Read originImage, output to colorOptimizedImage.
+void doColorOptimize(cimg_library::CImg<unsigned char> &originImage,cimg_library::CImg<unsigned char> &colorOptimizedImage);//Read originImage, output to colorOptimizedImage.
 bool doOpencvAnalyse();//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 inline void doOutlineDraw();//Read colorOptimizedImage, output to manDrawOutline.
 bool doFinalAnalyse();//Read manDrawOutline, output to analyseResult. If can't recoginize given image, return false.

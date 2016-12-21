@@ -2,7 +2,7 @@
 
 using namespace cimg_library;
 
-void doColorOptimize()
+void doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &colorOptimizedImage)
 {
     std::queue<std::pair<int,int> > bfs_queue;
     std::vector<readyToChange>change_queue;
@@ -17,7 +17,7 @@ void doColorOptimize()
         {
             change_queue.clear();
             bfs_queue.push(std::make_pair(x,y));
-            cimg_color begin_color=cimg_color(originImage.atXYZC(x,y,0,0),originImage.atXYZC(x,y,0,1),originImage.atXYZC(x,y,0,2));
+            cimg_color begin_color(originImage.atXYZC(x,y,0,0),originImage.atXYZC(x,y,0,1),originImage.atXYZC(x,y,0,2));
             change_queue.push_back(readyToChange(x,y,begin_color));
             while(!bfs_queue.empty())
             {
@@ -25,14 +25,14 @@ void doColorOptimize()
                 std::pair<int,int> top_element=bfs_queue.front();
                 bfs_queue.pop();
                 int now_x=top_element.first,now_y=top_element.second;
-                cimg_color now=cimg_color(originImage.atXYZC(now_x,now_y,0,0),originImage.atXYZC(now_x,now_y,0,1),originImage.atXYZC(now_x,now_y,0,2));
+                cimg_color now(originImage.atXYZC(now_x,now_y,0,0),originImage.atXYZC(now_x,now_y,0,1),originImage.atXYZC(now_x,now_y,0,2));
                 for(int x_r=0;x_r<8;++x_r)
                     for(int y_r=0;y_r<8;++y_r)
                     {
                         int next_x=now_x+dx[x_r],next_y=now_y+dy[y_r];
                         if(next_x<0||next_x>size_x||next_y<0||next_y>size_y||visited[next_x][next_y])
                             continue;
-                        cimg_color next=cimg_color(originImage.atXYZC(next_x,next_y,0,0),originImage.atXYZC(next_x,next_y,0,1),originImage.atXYZC(next_x,next_y,0,2));
+                        cimg_color next(originImage.atXYZC(next_x,next_y,0,0),originImage.atXYZC(next_x,next_y,0,1),originImage.atXYZC(next_x,next_y,0,2));
                         if(next-now<eps)
                         {
                             bfs_queue.push(std::make_pair(x,y));

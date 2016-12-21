@@ -7,6 +7,9 @@ using namespace cimg_library;
 void displayHelpInfo(){cout << "help"<<endl;}
 int main(int argv_size, const char **args)
 {
+	cimg_library::CImg<unsigned char> originImage,
+    colorOptimizedImage,
+    manDrawOutline;
     if(argv_size < 2)
     {
         displayHelpInfo();
@@ -47,12 +50,12 @@ int main(int argv_size, const char **args)
         }
     }
 //    try
-    {
-        doColorOptimize();
+//    {
+        doColorOptimize(originImage,colorOptimizedImage);
         cout << "DEBUG-TERMINAGE:"<< endl;
         colorOptimizedImage.display();
         return 0;
-        if(!doOpencvAnalyse())
+/*        if(!doOpencvAnalyse())
         {
             doOutlineDraw();
             if(!doFinalAnalyse())
@@ -62,7 +65,7 @@ int main(int argv_size, const char **args)
             }
         }
         putHatOn();
-    }
+//    }
     if(outputFileName.empty())
         outputFileName = "output.png";
     resultImage.save_png(outputFileName.c_str());
@@ -70,5 +73,5 @@ int main(int argv_size, const char **args)
 
 
 
-    return 0;
+    return 0;*/
 }
