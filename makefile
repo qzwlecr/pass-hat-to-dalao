@@ -13,4 +13,6 @@ outliner.o:outliner/outliner.cpp outliner/outliner.hpp
 reconizer.o:ellipse_recognizer/recognizer.cpp ellipse_recognizer/recognizer.hpp 
 	g++ ellipse_recognizer/recognizer.cpp -O2 -L/usr/X11R6/lib -lm -lpthread -lX11 `pkg-config opencv --cflags` `pkg-config opencv --libs` -c
 
+clean:main.o optimizer.o outliner.o reconizer.o main
+	rm main *.o
 # example: g++ -o hello_word.exe hello_world.cpp -O2 -L/usr/X11R6/lib -lm -lpthread -lX11
