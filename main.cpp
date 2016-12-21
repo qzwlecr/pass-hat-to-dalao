@@ -49,6 +49,9 @@ int main(int argv_size, const char **args)
 //    try
     {
         doColorOptimize();
+        cout << "DEBUG-TERMINAGE:"<< endl;
+        colorOptimizedImage.display();
+        return 0;
         if(!doOpencvAnalyse())
         {
             doOutlineDraw();
