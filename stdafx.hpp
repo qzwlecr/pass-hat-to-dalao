@@ -24,7 +24,7 @@ cimg_library::CImg<unsigned char> resultImage;
 void doColorOptimize();//Read originImage, output to colorOptimizedImage.
 bool doOpencvAnalyse();//Read colorOptimizedImage, if success, return true and output to resultImage, else, return false and do nothing to resultImage.
 void doOutlineDraw();//Read colorOptimizedImage, output to manDrawOutline.
-void doFinalAnalyse();//Read manDrawOutline, output to resultImage.
+bool doFinalAnalyse();//Read manDrawOutline, output to resultImage. If can't recoginize given image, return false.
 namespace cimg_library{
 class cimg_color;
 namespace recolic_private_namespace{
