@@ -5,6 +5,7 @@ using namespace cimg_library;
 
 void doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &colorOptimizedImage)
 {
+    colorOptimizedImage=originImage;
     std::queue<std::pair<int,int> > bfs_queue;
     std::vector<readyToChange>change_queue;
     int size_x=originImage.width(),size_y=originImage.height();
