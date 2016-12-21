@@ -13,8 +13,7 @@ namespace qLibrary{
             return tmpcc;
         }
         bool checkColorDivergence(cimg_library::cimg_color a,cimg_library::cimg_color b){
-            const int min_divergence=64;
-            return ((a-b)>=min_divergence);
+            return ((a-b)>=MIN_DIVERGENCE);
         }
         bool checkOutlineAt(cimg_library::CImg<unsigned char> &orig,cimg_library::CImg<unsigned char> &out,int x,int y){
             // check the upper one only.
@@ -29,6 +28,16 @@ namespace qLibrary{
                 return true;
             }
             return false;
+        }
+        cimg_library::CImg<unsigned char> checkOutline(cimg_library::CImg<unsigned char> &cimg){
+            int origwidth=cimg.width(),origlength=cimg.height();
+            cimg_library::CImg<unsigned char> outimg(origwidth,origlength,1,3,0);
+            for(int iterx=0;iterx<origwidth;iterx++){
+                for(int itery=0;itery<origlength;itery++){
+                    checkOutlineAt(cimg,outimg,iterx,itery);
+                }
+            }
+            return outimg;
         }
     }
 }
