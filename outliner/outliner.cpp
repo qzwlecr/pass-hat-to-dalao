@@ -11,9 +11,9 @@
 namespace qLibrary{
     namespace Graphics{
         cimg_library::cimg_color getColorAt(cimg_library::CImg<unsigned char> cimg,int x,int y){
-			std::cout << "attempt call getColorAt() " << std::endl;
+			//std::cout << "attempt call getColorAt() " << std::endl;
             cimg_library::cimg_color tmpcc(COLOR_R(cimg,x,y),COLOR_G(cimg,x,y),COLOR_B(cimg,x,y));
-			std::cout << "attemption over" << std::endl;
+			//std::cout << "attemption over" << std::endl;
             return tmpcc;
         }
         bool checkColorDivergence(cimg_library::cimg_color a,cimg_library::cimg_color b){
