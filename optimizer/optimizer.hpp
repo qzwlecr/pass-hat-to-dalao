@@ -7,7 +7,7 @@
 
 using namespace cimg_library;
 typedef unsigned char uchar;
-const int eps=10;
+const int eps=25;
 const int dx[]={0,0,1,1,1,-1,-1,-1};
 const int dy[]={1,-1,0,1,-1,0,1,-1};
 
