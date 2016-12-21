@@ -9,11 +9,11 @@
 #include <array>
 //Global Variables
 //These references are guaranteed to be valid while calling your modules.
-cimg_library::CImg<unsigned char> originImage,
+extern cimg_library::CImg<unsigned char> originImage,
     colorOptimizedImage,
     manDrawOutline;
 //Pass result
-struct
+extern struct
 {
     bool bSuccess;
     struct {

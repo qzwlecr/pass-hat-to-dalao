@@ -8,6 +8,8 @@
 #include <opencv2/core.hpp>
 #define cimg_plugin1 "cvMat.h"
 
+#define MIN_SCORE_TO_USE_OPENCV_RESULT 100
+
 namespace qLibrary{
     namespace Graphics{
         std::vector<cv::RotatedRect> doOpencvRecognizer(cv::Mat &colorized_img);
@@ -30,9 +32,24 @@ bool doOpencvAnalyse()
             return 0;
         //give score.
         int16_t toReturn = (limitedRect.height + limitedRect.width) - toJudge.center.y;
-        return toReturn > 0 ? toReturn : 0;
+        return toReturn > 0 ? static_cast<uint16_t>(toReturn) : 0;
     };
-
+    uint16_t maxScore = 0;
+    RotatedRect *pBestResult = nullptr;
+    int originHeight = colorOptimizedImage.height();
+    for(RotatedRect &currentCheckRect : recognizedBuf)
+    {
+        uint16_t currentScore = scoreRotatedRect(currentCheckRect, originHeight);
+        if(currentScore && currentScore > maxScore)
+        {
+            maxScore = currentScore;
+            pBestResult = &currentCheckRect;
+        }
+    }
+    if(maxScore < MIN_SCORE_TO_USE_OPENCV_RESULT)
+        return false;
+    analyseResult.bSuccess = true;
+    analyseResult.bottomLine.lineBegin =
 }
 
 #endif

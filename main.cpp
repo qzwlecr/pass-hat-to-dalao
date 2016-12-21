@@ -2,6 +2,24 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
+cimg_library::CImg<unsigned char> originImage,
+    colorOptimizedImage,
+    manDrawOutline;
+
+struct
+{
+    bool bSuccess;
+    struct {
+        struct point {
+            uint16_t x;
+            uint16_t y;
+        };
+        point lineBegin;
+        point lineEnd;
+    } bottomLine;
+} analyseResult;
+
 using namespace std;
 using namespace cimg_library;
 void displayHelpInfo(){cout << "help"<<endl;}
