@@ -46,7 +46,7 @@ public:
 namespace recolic_private_namespace{
     inline uint16_t colorCompare(const cimg_color &colorA, const cimg_color &colorB)
     {
-        auto getMinusAbs = [](unsigned char a, unsigned char b) -> uint16_t {return a>b?a-b:b-a;}
+        auto getMinusAbs = [](unsigned char a, unsigned char b) -> uint16_t {return a>b?a-b:b-a;};
         return getMinusAbs(colorA.color_dat[0], colorB.color_dat[0])+getMinusAbs(colorA.color_dat[1], colorB.color_dat[1])+getMinusAbs(colorA.color_dat[2], colorB.color_dat[2]);
     }
 }
