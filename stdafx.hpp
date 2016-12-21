@@ -11,7 +11,8 @@
 //These references are guaranteed to be valid while calling your modules.
 extern cimg_library::CImg<unsigned char> originImage,
     colorOptimizedImage,
-    manDrawOutline;
+    manDrawOutline,
+    resultImage;
 //Pass result
 struct _sResult
 {
