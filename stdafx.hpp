@@ -24,7 +24,7 @@ struct _sResult
         point lineBegin;
         point lineEnd;
     } bottomLine;
-}
+};
 extern _sResult analyseResult;
 //Prototypes of function (to complete)
 //Assume thar 'originImage' is initialized properly.

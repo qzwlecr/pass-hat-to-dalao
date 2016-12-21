@@ -5,7 +5,8 @@
 
 cimg_library::CImg<unsigned char> originImage,
     colorOptimizedImage,
-    manDrawOutline;
+    manDrawOutline,
+    resultImage;
 
 _sResult analyseResult;
 
@@ -53,6 +54,13 @@ int main(int argv_size, const char **args)
             throw runtime_error("Argument analyzement error: switch case overflow.");
         }
     }
+
+    //Do initialization.
+    CImg<unsigned char> black_init(originImage);
+    black_init.fill(255);
+    colorOptimizedImage = manDrawOutline = resultImage = black_init;
+    black_init.display();
+    return 0;
 //    try
     {
         doColorOptimize();
