@@ -13,10 +13,25 @@ namespace qLibrary{
         std::vector<cv::RotatedRect> doOpencvRecognizer(cv::Mat &colorized_img);
     }
 }
-
+using cv::RotatedRect;
+using cv::Rect;
 bool doOpencvAnalyse()
 {
-    auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(colorOptimizedImage);
+    auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(colorOptimizedImage.get_MAT());
+    auto scoreRotatedRect = [](const RotatedRect &toJudge, int originHeight) -> uint16_t {
+        //remove some abviously invalid results.
+        const Rect &limitedRect = toJudge.boundingRect();
+        if(limitedRect.height < originHeight/4 || limitedRect.height > originHeight)
+            return 0;
+        if(toJudge.center.y * 2 - limitedRect.height > originHeight)
+            return 0;
+        float unbalanceRate = limitedRect.height / limitedRect.width;
+        if(unbalanceRate > 3 || unbalanceRate < 0.33)
+            return 0;
+        //give score.
+        int16_t toReturn = (limitedRect.height + limitedRect.width) - toJudge.center.y;
+        return toReturn > 0 ? toReturn : 0;
+    };
 
 }
 
