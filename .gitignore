@@ -33,3 +33,13 @@
 *.object
 *.layout
 *.depend
+
+#vim
+*.swp
+
+#test
+*.jpg
+*.png
+*.jpeg
+*.tif
+*.bmp
