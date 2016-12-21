@@ -10,6 +10,7 @@ int main(int argv_size, const char **args)
 	cimg_library::CImg<unsigned char> originImage,
     colorOptimizedImage,
     manDrawOutline;
+	struct analyseResultStruct analyseResult;
     if(argv_size < 2)
     {
         displayHelpInfo();

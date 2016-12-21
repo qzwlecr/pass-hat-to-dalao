@@ -11,25 +11,25 @@
 //These references are guaranteed to be valid while calling your modules.
 
 //Pass result
-struct
-{
-    bool bSuccess;
-    struct {
-        struct point {
-            uint16_t x;
-            uint16_t y;
-        };
-        point lineBegin;
-        point lineEnd;
-    } bottomLine;
-} analyseResult;
+struct analyseResultStruct
+	{
+		bool bSuccess;
+		struct {
+			struct point {
+				uint16_t x;
+				uint16_t y;
+			};
+			point lineBegin;
+			point lineEnd;
+		} bottomLine;
+};
 //Prototypes of function (to complete)
 //Assume thar 'originImage' is initialized properly.
 void doColorOptimize(cimg_library::CImg<unsigned char> &originImage,cimg_library::CImg<unsigned char> &colorOptimizedImage);//Read originImage, output to colorOptimizedImage.
-bool doOpencvAnalyse();//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
-inline void doOutlineDraw();//Read colorOptimizedImage, output to manDrawOutline.
-bool doFinalAnalyse();//Read manDrawOutline, output to analyseResult. If can't recoginize given image, return false.
-void putHatOn();//Select an hat and put it to originImage(according to analyseResult).
+bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,struct analyseResultStruct &analyseResult);//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
+inline void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline);//Read colorOptimizedImage, output to manDrawOutline.
+bool doFinalAnalyse(cimg_library::CImg<unsigned char> &manDrawOutline,struct analyseResultStruct &analyseResult);//Read manDrawOutline, output to analyseResult. If can't recoginize given image, return false.
+void putHatOn(cimg_library::CImg<unsigned char> &originImage);//Select an hat and put it to originImage(according to analyseResult).
 namespace cimg_library{
 class cimg_color;
 namespace recolic_private_namespace{
