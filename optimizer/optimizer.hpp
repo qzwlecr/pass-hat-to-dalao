@@ -2,6 +2,7 @@
 #define QZWLECR_OPTIMIZER_H
 #include"../stdafx.hpp"
 #include<queue>
+#include<iostream>
 #include<map>
 
 using namespace cimg_library;
