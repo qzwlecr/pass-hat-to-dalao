@@ -24,7 +24,7 @@ cimg_library::CImg<unsigned char> resultImage;
 void doColorOptimize();//Read originImage, output to colorOptimizedImage.
 bool doOpencvAnalyse();//Read colorOptimizedImage, if success, return true and output to resultImage, else, return false and do nothing to resultImage.
 void doOutlineDraw();//Read colorOptimizedImage, output to manDrawOutline.
-void doFinalAnalyse();//Read manDrawOutline, output to resultImage.
+bool doFinalAnalyse();//Read manDrawOutline, output to resultImage. If can't recoginize given image, return false.
 namespace cimg_library{
 class cimg_color;
 namespace recolic_private_namespace{
@@ -46,7 +46,7 @@ public:
 namespace recolic_private_namespace{
     inline uint16_t colorCompare(const cimg_color &colorA, const cimg_color &colorB)
     {
-        auto getMinusAbs = [](unsigned char a, unsigned char b) -> uint16_t {return a>b?a-b:b-a;}
+        auto getMinusAbs = [](unsigned char a, unsigned char b) -> uint16_t {return a>b?a-b:b-a;};
         return getMinusAbs(colorA.color_dat[0], colorB.color_dat[0])+getMinusAbs(colorA.color_dat[1], colorB.color_dat[1])+getMinusAbs(colorA.color_dat[2], colorB.color_dat[2]);
     }
 }
