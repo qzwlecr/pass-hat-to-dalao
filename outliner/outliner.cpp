@@ -21,10 +21,14 @@ namespace qLibrary{
             // that can made the decision.
             if(x==0)
                 return false;// attempt to check the upper bound is not allowed.
-            cimg_library::cimg_color currc=getColorAt(orig,x,y),upperc=getColorAt(orig,x-1,y);
+            cimg_library::cimg_color currc(getColorAt(orig,x,y)),upperc(getColorAt(orig,x-1,y));
             if(checkColorDivergence(currc,upperc)){
-                
+                COLOR_R(out,x,y)=255;
+                COLOR_G(out,x,y)=255;
+                COLOR_B(out,x,y)=255;
+                return true;
             }
+            return false;
         }
     }
 }
