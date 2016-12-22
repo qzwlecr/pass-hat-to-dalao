@@ -9,7 +9,7 @@ using namespace cimg_library;
 typedef unsigned char uchar;
 
 const int eps=20;
-const float face_size=0.01;
+const float face_size=0.001;
 const int dx[]={0,0,1,1,1,-1,-1,-1};
 const int dy[]={1,-1,0,1,-1,0,1,-1};
 
