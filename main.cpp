@@ -64,6 +64,7 @@ int main(int argv_size, const char **args)
     colorOptimizedImage = manDrawOutline = resultImage = black_init;
 //    try
 //    {
+		//originImage.display();
         doColorOptimize(originImage,colorOptimizedImage);
         cout << "DEBUG-TERMINAGE:"<< endl;
         colorOptimizedImage.display();
