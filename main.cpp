@@ -8,7 +8,7 @@ cimg_library::CImg<unsigned char> originImage,
     manDrawOutline,
     resultImage;
 
-_sResult analyseResult;
+struct analyseResultStruct analyseResult;
 
 using namespace std;
 using namespace cimg_library;
@@ -62,8 +62,6 @@ int main(int argv_size, const char **args)
     CImg<unsigned char> black_init(originImage);
     black_init.fill(255);
     colorOptimizedImage = manDrawOutline = resultImage = black_init;
-    black_init.display();
-    return 0;
 //    try
 //    {
         doColorOptimize(originImage,colorOptimizedImage);
