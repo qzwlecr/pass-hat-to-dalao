@@ -3,15 +3,16 @@
 using namespace std;
 using namespace cimg_library;
 
-void doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &colorOptimizedImage)
+bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &colorOptimizedImage)
 {
     colorOptimizedImage=originImage;
     std::queue<std::pair<int,int> > bfs_queue;
     std::vector<readyToChange>change_queue;
     int size_x=originImage.width(),size_y=originImage.height();
-    bool **visited=new bool*[size_x];
-    for(int i=0;i<size_y;i++)
-        visited[i]=new bool[size_y];
+    bool **visited=new bool*[size_x],**unusable=new bool*[size_x];
+    unsigned long long r_aver=0,g_aver=0,b_aver=0;
+    for(int i=0;i<size_x;++i)
+        visited[i]=new bool[size_y],unusable[i]=new bool[size_y];
     //std::cout<<233<<std::endl;
     cimg_forXY(originImage,x,y)
     {
@@ -25,7 +26,8 @@ void doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &color
             cimg_color begin_color(originImage.atXYZC(x,y,0,0),originImage.atXYZC(x,y,0,1),originImage.atXYZC(x,y,0,2));
     //        cout<<"get clear"<<endl;
             change_queue.push_back(readyToChange(x,y,begin_color));
-    //        cout<<"push backed"<<endl;
+            r_aver+begin_color[0],g_aver+=begin_color[1],b_aver+=begin_color[2];
+    //      cout<<"push backed"<<endl;
             visited[x][y]=true;
     //        cout<<"true"<<endl;
             while(!bfs_queue.empty())
@@ -49,6 +51,7 @@ void doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &color
                     {
                         bfs_queue.push(std::make_pair(next_x,next_y));
                         change_queue.push_back(readyToChange(next_x,next_y,next));
+                        r_aver+=next[0],g_aver+=next[1],b_aver+=next[2];
                         visited[next_x][next_y]=true;
     //                    cout<<"go go go"<<endl;
                     }
@@ -56,18 +59,28 @@ void doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &color
                 }
             }
     //        cout<<"loop end"<<endl;
-            unsigned long long r_aver=0,g_aver=0,b_aver=0;
-            for(std::vector<readyToChange>::iterator iter=change_queue.begin();iter!=change_queue.end();++iter)
-                r_aver+=(*iter).data[0],g_aver+=(*iter).data[1],b_aver+=(*iter).data[2];
+    //        for(std::vector<readyToChange>::iterator iter=change_queue.begin();iter!=change_queue.end();++iter)
+    //            r_aver+=(*iter).data[0],g_aver+=(*iter).data[1],b_aver+=(*iter).data[2];
     //        cout<<"sum located"<<endl;
             r_aver/=change_queue.size(),g_aver/=change_queue.size(),b_aver/=change_queue.size();
     //        cout<<"average located"<<endl;
-            for(std::vector<readyToChange>::iterator iter=change_queue.begin();iter!=change_queue.end();++iter)
+            if(change_queue.size()>=face_size*size_x*size_y)
             {
-                int x=(*iter).x,y=(*iter).y;
-                colorOptimizedImage(x,y,0,0)=r_aver,colorOptimizedImage(x,y,0,1)=g_aver,colorOptimizedImage(x,y,0,2)=b_aver;
+                for(std::vector<readyToChange>::iterator iter=change_queue.begin();iter!=change_queue.end();++iter)
+                {
+                    int nx=(*iter).x,ny=(*iter).y;
+                    colorOptimizedImage(nx,ny,0,0)=r_aver,colorOptimizedImage(nx,ny,0,1)=g_aver,colorOptimizedImage(nx,ny,0,2)=b_aver;
+                }
             }
-    //        cout<<"changed end"<<endl;
+            else
+            {
+                for(std::vector<readyToChange>::iterator iter=change_queue.begin();iter!=change_queue.end();++iter)
+                {
+                    int nx=(*iter).x,ny=(*iter).y;
+                    unusable[nx][ny]=true;
+                }
+            }       //        cout<<"changed end"<<endl;
         }
     }
+    return unusable;
 }
