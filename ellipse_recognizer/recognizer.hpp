@@ -22,6 +22,18 @@ using cv::Point2f;
 bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,analyseResultStruct &analyseResult)//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 {
     auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(colorOptimizedImage.get_MAT());
+    //DEBUG INFO
+    auto printPoint = [](const Point2f &toPrint) {cout << '(' << toPrint.x << ',' << toPrint.y << ')'; };
+    for(const RotatedRect &cur : recognizedBuf)
+    {
+        Point2f buf[4];
+        cur.points(buf);
+        cout << "RECOLIC_DEBUG > Center=" << printPoint(cur.center) << " Height=" << cur.boundingRect().height << " Width=" << cur.boundingRect().width << "4Point:";
+        for(size_t cter = 0; cter < 4; ++cter)
+            printPoint(buf[cter]);
+        cout << "|" << endl;
+    }
+    //DEBUG INFO
     auto scoreRotatedRect = [](const RotatedRect &toJudge, int originHeight) -> uint16_t {
         //remove some abviously invalid results.
         const Rect &limitedRect = toJudge.boundingRect();
