@@ -9,7 +9,6 @@
 #include <array>
 //Global Variables
 //These references are guaranteed to be valid while calling your modules.
-
 //Pass result
 struct analyseResultStruct
 	{
