@@ -9,19 +9,19 @@ bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &col
     std::queue<std::pair<int,int> > bfs_queue;
     std::vector<readyToChange>change_queue;
     int size_x=originImage.width(),size_y=originImage.height();
-    bool **visited=new bool*[size_x],**unusable=new bool*[size_x];
+    bool **visited=new bool[size_x][size_y];
+    bool **unusable=new bool[size_x][size_y];
     unsigned long long r_aver=0,g_aver=0,b_aver=0;
-    for(int i=0;i<size_x;++i)
-        visited[i]=new bool[size_y],unusable[i]=new bool[size_y];
     //std::cout<<233<<std::endl;
-    cimg_forXY(originImage,x,y)
+    for(int i=0;i<size_x;++i)
+        for(int j=0;i<size_y;++j)
+                visited[i][j]=false,unusable[i][j]=false;
+    cimg_forXY(oriiginImage,x,y)
     {
     //    cout<<x<<' '<<y<<endl;
         if(!visited[x][y])
         {
-            r_aver=0;
-            g_aver=0;
-            b_aver=0;
+            r_aver=0,g_aver=0,b_aver=0;
             change_queue.clear();
     //        cout<<"queue clear"<<endl;
             bfs_queue.push(std::make_pair(x,y));
@@ -67,8 +67,8 @@ bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &col
     //        cout<<"sum located"<<endl;
             r_aver/=change_queue.size(),g_aver/=change_queue.size(),b_aver/=change_queue.size();
     //        cout<<"average located"<<endl;
-			cout << "SIZE : " << change_queue.size() << endl;
-            //if(change_queue.size()<background_size*size_x*size_y||change_queue.size()>=face_size*size_x*size_y)
+    //        cout << "SIZE : " << change_queue.size() << endl;
+    //        if(change_queue.size()<background_size*size_x*size_y||change_queue.size()>=face_size*size_x*size_y)
             if(1)
             {
                 for(std::vector<readyToChange>::iterator iter=change_queue.begin();iter!=change_queue.end();++iter)
