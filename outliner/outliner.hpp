@@ -13,6 +13,6 @@ namespace qLibrary{
     }
 }
 
-void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline);
+void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline,bool** chkArray);
 
 #endif
