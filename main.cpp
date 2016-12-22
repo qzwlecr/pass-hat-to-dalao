@@ -3,19 +3,14 @@
 #include <string>
 #include <vector>
 
-cimg_library::CImg<unsigned char> originImage,
-    colorOptimizedImage,
-    manDrawOutline,
-    resultImage;
+cimg_library::CImg<unsigned char> originImage;
 
 using namespace std;
 using namespace cimg_library;
 void displayHelpInfo(){cout << "help"<<endl;}
 int main(int argv_size, const char **args)
 {
-	cimg_library::CImg<unsigned char> originImage,
-    colorOptimizedImage;
-	bool** chkarr;
+    std::vector<std::vector<bool> > chkarr;
 	analyseResultStruct analyseResult;
     if(argv_size < 2)
     {
@@ -56,19 +51,34 @@ int main(int argv_size, const char **args)
             throw runtime_error("Argument analyzement error: switch case overflow.");
         }
     }
-
+    
     //Do initialization.
-    CImg<unsigned char> black_init(originImage);
-    black_init.fill(255);
-    colorOptimizedImage = manDrawOutline = resultImage = black_init;
+    CImg<unsigned char> colorOptimizedImage(originImage.width(),originImage.height(),1,3,0),
+    manDrawOutline(originImage.width(),originImage.height(),1,3,0),
+    resultImage(originImage.width(),originImage.height(),1,3,0);
+//    CImg<unsigned char> black_init(originImage);
+//    black_init.fill(255);
+//    colorOptimizedImage = manDrawOutline = resultImage = black_init;
 //    try
 //    {
-		//originImage.display();
+		originImage.display();
+		cin.get();
         chkarr=doColorOptimize(originImage,colorOptimizedImage);
         cout << "DEBUG-TERMINAGE:"<< endl;
+		CImg<unsigned char> boolArrayDisp(originImage.width(),originImage.height(),1,3,0);
+		for(int iterx=0;iterx<originImage.width();iterx++){
+			for(int itery=0;itery<originImage.height();itery++){
+				if(chkarr[iterx][itery]){
+					boolArrayDisp(iterx,itery,0,0)=255;
+					boolArrayDisp(iterx,itery,0,1)=255;
+					boolArrayDisp(iterx,itery,0,2)=255;
+				}
+			}
+		}
         colorOptimizedImage.display();
         cin.get();
-		cimg_library::CImg<unsigned char> manDrawOutline(originImage.width(),originImage.height(),1,3,0);
+		boolArrayDisp.display();
+		cin.get();
 		doOutlineDraw(colorOptimizedImage,manDrawOutline,chkarr);
 		manDrawOutline.display();
         cin.get();

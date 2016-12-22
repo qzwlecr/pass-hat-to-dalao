@@ -1,34 +1,23 @@
 #include "optimizer.hpp"
-
+#include <vector>
 using namespace std;
 using namespace cimg_library;
 
-bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &colorOptimizedImage)
+std::vector<std::vector<bool> > doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &colorOptimizedImage)
 {
     colorOptimizedImage=originImage;
     std::queue<std::pair<int,int> > bfs_queue;
     std::vector<readyToChange>change_queue;
     int size_x=originImage.width(),size_y=originImage.height();
-    bool **visited=(bool **)malloc(sizeof(bool *)*size_x+sizeof(bool)*size_x*size_y);
-    bool *head=(bool *)(visited+sizeof(bool *)*size_x);
-    for(int i=0;i<size_x;++i)
-    {
-        visited[i]=(bool *)(head+i*size_y*sizeof(bool));
-        for(int j=0;j<size_y;++j)
-            new(&visited[i][j]) bool;
-    }
-    bool **unusable=(bool **)malloc(sizeof(bool*)*size_x+sizeof(bool)*size_x*size_y);
-    head=(bool *)(unusable+sizeof(bool*)*size_x);
-    for(int i=0;i<size_x;++i)
-    {
-        unusable[i]=(bool *)(head+i*size_y*sizeof(bool));
-        for(int j=0;j<size_y;++j)
-            new(&unusable[i][j]) bool;
-    }
     unsigned long long r_aver=0,g_aver=0,b_aver=0;
-    for(int i=0;i<size_x;++i)
-        for(int j=0;j<size_y;++j)
-                visited[i][j]=false,unusable[i][j]=false;
+    std::vector<std::vector<bool> > visited,unusable;
+    for(int i=0;i<size_x;++i){
+        std::vector<bool> tmpvec;
+        for(int j=0;j<size_y;++j){
+            tmpvec.push_back(false);
+        }
+        visited.push_back(tmpvec);unusable.push_back(tmpvec);
+    }
     //for(int i=0;i<size_x;++i)
     //    for(int j=0;j<size_y;++j)
     //        visited[i][j]=true;

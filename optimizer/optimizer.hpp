@@ -24,6 +24,6 @@ public:
     cimg_color data;
 };
 
-bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &colorOptimizedImage);
+std::vector<std::vector<bool> > doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &colorOptimizedImage);
 
 #endif
