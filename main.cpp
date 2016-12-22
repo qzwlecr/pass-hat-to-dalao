@@ -8,8 +8,6 @@ cimg_library::CImg<unsigned char> originImage,
     manDrawOutline,
     resultImage;
 
-struct analyseResultStruct analyseResult;
-
 using namespace std;
 using namespace cimg_library;
 void displayHelpInfo(){cout << "help"<<endl;}
@@ -18,7 +16,7 @@ int main(int argv_size, const char **args)
 	cimg_library::CImg<unsigned char> originImage,
     colorOptimizedImage;
 	bool** chkarr;
-	struct analyseResultStruct analyseResult;
+	analyseResultStruct analyseResult;
     if(argv_size < 2)
     {
         displayHelpInfo();
@@ -72,17 +70,21 @@ int main(int argv_size, const char **args)
 		cimg_library::CImg<unsigned char> manDrawOutline(originImage.width(),originImage.height(),1,3,0);
 		doOutlineDraw(colorOptimizedImage,manDrawOutline,chkarr);
 		manDrawOutline.display();
-        return 0;
-/*        if(!doOpencvAnalyse())
+
+
+
+        if(!doOpencvAnalyse(manDrawOutline, analyseResult))
         {
-            doOutlineDraw();
-            if(!doFinalAnalyse())
+            //if(!doFinalAnalyse())
             {
-                cout << "Image can't be recoginized, try another picture." << endl;
+
+                cout << "Image is refused to be recoginized, try another picture." << endl;
                 return 0;
             }
         }
-        putHatOn();
+        cout << "Result:beginx=" << analyseResult.bottomLine.lineBegin.x << "beginy=" << analyseResult.bottomLine.lineBegin.y << endl;
+        cout << "Result:endx=" << analyseResult.bottomLine.lineEnd.x << "endy=" << analyseResult.bottomLine.lineEnd.y << endl;
+        /*putHatOn();
 //    }
     if(outputFileName.empty())
         outputFileName = "output.png";

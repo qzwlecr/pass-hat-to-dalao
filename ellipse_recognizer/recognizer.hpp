@@ -7,19 +7,19 @@
 #include <cmath>
 
 #include <opencv2/core.hpp>
-#define cimg_plugin1 "cvMat.h"
 #include "../stdafx.hpp"
 
 #define MIN_SCORE_TO_USE_OPENCV_RESULT 100
 
 namespace qLibrary{
     namespace Graphics{
-        std::vector<cv::RotatedRect> doOpencvRecognizer(cv::Mat &colorized_img);
+        std::vector<cv::RotatedRect> doOpencvRecognizer(const cv::Mat &colorized_img);
     }
 }
 using cv::RotatedRect;
 using cv::Rect;
-bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,struct analyseResultStruct &analyseResult)//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
+using cv::Point2f;
+bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,analyseResultStruct &analyseResult)//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 {
     auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(colorOptimizedImage.get_MAT());
     auto scoreRotatedRect = [](const RotatedRect &toJudge, int originHeight) -> uint16_t {
@@ -52,13 +52,13 @@ bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,stru
         return false;
     //math compute...
     //methods
-    auto getk = [](const Point2f &pa, const Point2f &pb) -> float {return (pa.y - pb.y)/(pa.x - pb.x);}
+    auto getk = [](const Point2f &pa, const Point2f &pb) -> float {return (pa.y - pb.y)/(pa.x - pb.x);};
     //compare k1 k2 and get 'a' 'b'
     Point2f head, bottom, left, right;
     size_t xMax = 0, xMin = 0; //src xy
     size_t spareA = 4, spareB = 4;
     float dxMax = 0, dxMin = 10000.0;//src xy val buf.
-    Point2f tmpBuf[4] = {0};
+    Point2f tmpBuf[4];
     pBestResult->points(tmpBuf);
     for(size_t cter = 0;cter < 4;++cter)
     {

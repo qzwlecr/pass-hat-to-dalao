@@ -14,20 +14,16 @@ struct analyseResultStruct
 	{
 		bool bSuccess;
 		struct {
-			struct point {
-				uint16_t x;
-				uint16_t y;
-			};
-			point lineBegin;
-			point lineEnd;
+			cv::Point2f lineBegin;
+			cv::Point2f lineEnd;
 		} bottomLine;
 };
 //Prototypes of function (to complete)
 //Assume thar 'originImage' is initialized properly.
 bool** doColorOptimize(cimg_library::CImg<unsigned char> &originImage,cimg_library::CImg<unsigned char> &colorOptimizedImage);//Read originImage, output to colorOptimizedImage.
-bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,struct analyseResultStruct &analyseResult);//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
+bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &manDrawOutline,analyseResultStruct &analyseResult);//Read manDrawOutline, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline,bool** chkarr);//Read colorOptimizedImage, output to manDrawOutline.
-bool doFinalAnalyse(cimg_library::CImg<unsigned char> &manDrawOutline,struct analyseResultStruct &analyseResult);//Read manDrawOutline, output to analyseResult. If can't recoginize given image, return false.
+bool doFinalAnalyse(cimg_library::CImg<unsigned char> &manDrawOutline,analyseResultStruct &analyseResult);//Read manDrawOutline, output to analyseResult. If can't recoginize given image, return false.
 void putHatOn(cimg_library::CImg<unsigned char> &originImage);//Select an hat and put it to originImage(according to analyseResult).
 namespace cimg_library{
 class cimg_color;

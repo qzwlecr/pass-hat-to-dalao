@@ -9,7 +9,7 @@ namespace qLibrary{
         }
         const unsigned int MAX_PCTG=50;
         const unsigned int MIN_PCTG=1000;
-        std::vector<cv::RotatedRect> doOpencvRecognizer(cv::Mat &origimg){
+        std::vector<cv::RotatedRect> doOpencvRecognizer(const cv::Mat &origimg){
             std::vector<cv::RotatedRect> outvec;
             if(origimg.empty())
                 return outvec;
