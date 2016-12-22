@@ -1,7 +1,7 @@
 main:main.o 
 	g++ optimizer.o outliner.o main.o -O2 -L/usr/X11R6/lib -lm -lpthread -lX11 -o main
 
-main.o:optimizer.o outliner.o
+main.o:main.cpp optimizer.o outliner.o
 	g++ main.cpp -O2 -L/usr/X11R6/lib -lm -lpthread -lX11 -c
 
 optimizer.o:optimizer/optimizer.cpp optimizer/optimizer.hpp 

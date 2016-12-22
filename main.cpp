@@ -51,6 +51,7 @@ int main(int argv_size, const char **args)
     }
 //    try
 //    {
+		//originImage.display();
         doColorOptimize(originImage,colorOptimizedImage);
         cout << "DEBUG-TERMINAGE:"<< endl;
         colorOptimizedImage.display();
