@@ -67,10 +67,11 @@ int main(int argv_size, const char **args)
         chkarr=doColorOptimize(originImage,colorOptimizedImage);
         cout << "DEBUG-TERMINAGE:"<< endl;
         colorOptimizedImage.display();
+        cin.get();
 		cimg_library::CImg<unsigned char> manDrawOutline(originImage.width(),originImage.height(),1,3,0);
 		doOutlineDraw(colorOptimizedImage,manDrawOutline,chkarr);
 		manDrawOutline.display();
-
+        cin.get();
 
 
         if(!doOpencvAnalyse(manDrawOutline, analyseResult))

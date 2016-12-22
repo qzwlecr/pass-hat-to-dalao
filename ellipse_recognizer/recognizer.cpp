@@ -10,8 +10,6 @@ namespace qLibrary{
         const unsigned int MAX_PCTG=50;
         const unsigned int MIN_PCTG=1000;
         std::vector<cv::RotatedRect> doOpencvRecognizer(const cv::Mat &origimg){
-            cimg_library::CImg<unsigned char> todebug(origimg);
-            todebug.display();
             std::vector<cv::RotatedRect> outvec;
             if(origimg.empty())
                 return outvec;
