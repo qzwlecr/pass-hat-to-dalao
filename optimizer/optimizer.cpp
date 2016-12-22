@@ -19,6 +19,9 @@ bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &col
     //    cout<<x<<' '<<y<<endl;
         if(!visited[x][y])
         {
+            r_aver=0;
+            g_aver=0;
+            b_aver=0;
             change_queue.clear();
     //        cout<<"queue clear"<<endl;
             bfs_queue.push(std::make_pair(x,y));
@@ -26,7 +29,7 @@ bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &col
             cimg_color begin_color(originImage.atXYZC(x,y,0,0),originImage.atXYZC(x,y,0,1),originImage.atXYZC(x,y,0,2));
     //        cout<<"get clear"<<endl;
             change_queue.push_back(readyToChange(x,y,begin_color));
-            r_aver+begin_color[0],g_aver+=begin_color[1],b_aver+=begin_color[2];
+            r_aver+=begin_color[0],g_aver+=begin_color[1],b_aver+=begin_color[2];
     //      cout<<"push backed"<<endl;
             visited[x][y]=true;
     //        cout<<"true"<<endl;
