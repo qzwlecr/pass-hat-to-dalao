@@ -9,6 +9,7 @@ int main(int argv_size, const char **args)
 {
 	cimg_library::CImg<unsigned char> originImage,
     colorOptimizedImage;
+	bool* chkarr;
 	struct analyseResultStruct analyseResult;
     if(argv_size < 2)
     {
@@ -52,11 +53,11 @@ int main(int argv_size, const char **args)
 //    try
 //    {
 		//originImage.display();
-        doColorOptimize(originImage,colorOptimizedImage);
+        chkarr=doColorOptimize(originImage,colorOptimizedImage);
         cout << "DEBUG-TERMINAGE:"<< endl;
         colorOptimizedImage.display();
 		cimg_library::CImg<unsigned char> manDrawOutline(originImage.width(),originImage.height(),1,3,0);
-		doOutlineDraw(colorOptimizedImage,manDrawOutline);
+		doOutlineDraw(colorOptimizedImage,manDrawOutline,chkarr);
 		manDrawOutline.display();
         return 0;
 /*        if(!doOpencvAnalyse())
