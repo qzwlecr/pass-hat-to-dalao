@@ -5,6 +5,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <vector>
 #include <cmath>
+#include <iostream>
 
 #include <opencv2/core.hpp>
 #include "../stdafx.hpp"
@@ -19,16 +20,22 @@ namespace qLibrary{
 using cv::RotatedRect;
 using cv::Rect;
 using cv::Point2f;
+using std::endl;
+using std::cout;
+
 bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,analyseResultStruct &analyseResult)//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 {
+    cout << "***********************RECOLIC_DEBUG**************************" << endl;
     auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(colorOptimizedImage.get_MAT());
     //DEBUG INFO
+    cout << "BUFFER SIZE:" << recognizedBuf.size() << endl;
+
     auto printPoint = [](const Point2f &toPrint) {cout << '(' << toPrint.x << ',' << toPrint.y << ')'; };
     for(const RotatedRect &cur : recognizedBuf)
     {
         Point2f buf[4];
         cur.points(buf);
-        cout << "RECOLIC_DEBUG > Center=" << printPoint(cur.center) << " Height=" << cur.boundingRect().height << " Width=" << cur.boundingRect().width << "4Point:";
+        cout << "RECOLIC_DEBUG > Center=" << (printPoint(cur.center), " Height=") << cur.boundingRect().height << " Width=" << cur.boundingRect().width << "4Point:";
         for(size_t cter = 0; cter < 4; ++cter)
             printPoint(buf[cter]);
         cout << "|" << endl;
