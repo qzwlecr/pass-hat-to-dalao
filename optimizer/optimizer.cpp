@@ -9,21 +9,40 @@ bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &col
     std::queue<std::pair<int,int> > bfs_queue;
     std::vector<readyToChange>change_queue;
     int size_x=originImage.width(),size_y=originImage.height();
-    bool **visited=new bool[size_x][size_y];
-    bool **unusable=new bool[size_x][size_y];
-    unsigned long long r_aver=0,g_aver=0,b_aver=0;
-    //std::cout<<233<<std::endl;
+    bool **visited=(bool **)malloc(sizeof(bool *)*size_x+sizeof(bool)*size_x*size_y);
+    bool *head=(bool *)(visited+sizeof(bool *)*size_x);
     for(int i=0;i<size_x;++i)
-        for(int j=0;i<size_y;++j)
+    {
+        visited[i]=(bool *)(head+i*size_y*sizeof(bool));
+        for(int j=0;j<size_y;++j)
+            new(&visited[i][j]) bool;
+    }
+    bool **unusable=(bool **)malloc(sizeof(bool*)*size_x+sizeof(bool)*size_x*size_y);
+    head=(bool *)(unusable+sizeof(bool*)*size_x);
+    for(int i=0;i<size_x;++i)
+    {
+        unusable[i]=(bool *)(head+i*size_y*sizeof(bool));
+        for(int j=0;j<size_y;++j)
+            new(&unusable[i][j]) bool;
+    }
+    unsigned long long r_aver=0,g_aver=0,b_aver=0;
+    for(int i=0;i<size_x;++i)
+        for(int j=0;j<size_y;++j)
                 visited[i][j]=false,unusable[i][j]=false;
-    cimg_forXY(oriiginImage,x,y)
+    //for(int i=0;i<size_x;++i)
+    //    for(int j=0;j<size_y;++j)
+    //        visited[i][j]=true;
+    cout<<"?????"<<endl;
+    cimg_forXY(originImage,x,y)
     {
     //    cout<<x<<' '<<y<<endl;
         if(!visited[x][y])
         {
             r_aver=0,g_aver=0,b_aver=0;
             change_queue.clear();
-    //        cout<<"queue clear"<<endl;
+            cout<<"queue clear"<<endl;
+            while(!bfs_queue.empty())
+                bfs_queue.pop();
             bfs_queue.push(std::make_pair(x,y));
     //        cout<<"pushed"<<endl;
             cimg_color begin_color(originImage.atXYZC(x,y,0,0),originImage.atXYZC(x,y,0,1),originImage.atXYZC(x,y,0,2));
@@ -33,13 +52,14 @@ bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &col
     //      cout<<"push backed"<<endl;
             visited[x][y]=true;
     //        cout<<"true"<<endl;
+            int cnt=0;
             while(!bfs_queue.empty())
             {
     //            cout<<"get in the loop"<<endl;
-                bool push_flag=false;
                 std::pair<int,int> top_element=bfs_queue.front();
                 bfs_queue.pop();
                 int now_x=top_element.first,now_y=top_element.second;
+    //            cout<<now_x<<' '<<now_y<<endl;
                 cimg_color now(originImage.atXYZC(now_x,now_y,0,0),originImage.atXYZC(now_x,now_y,0,1),originImage.atXYZC(now_x,now_y,0,2));
     //            cout<<"ready to go"<<endl;
                 for(int direct=0;direct<8;++direct)
@@ -60,8 +80,9 @@ bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &col
                     }
     //                cout<<direct<<"end"<<endl;
                 }
+                cout<<++cnt<<endl;
             }
-    //        cout<<"loop end"<<endl;
+            cout<<"loop end"<<endl;
     //        for(std::vector<readyToChange>::iterator iter=change_queue.begin();iter!=change_queue.end();++iter)
     //            r_aver+=(*iter).data[0],g_aver+=(*iter).data[1],b_aver+=(*iter).data[2];
     //        cout<<"sum located"<<endl;
