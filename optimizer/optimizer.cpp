@@ -68,7 +68,8 @@ bool **doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &col
             r_aver/=change_queue.size(),g_aver/=change_queue.size(),b_aver/=change_queue.size();
     //        cout<<"average located"<<endl;
 			cout << "SIZE : " << change_queue.size() << endl;
-            if(change_queue.size()<background_size*size_x*size_y||change_queue.size()>=face_size*size_x*size_y)
+            //if(change_queue.size()<background_size*size_x*size_y||change_queue.size()>=face_size*size_x*size_y)
+            if(1)
             {
                 for(std::vector<readyToChange>::iterator iter=change_queue.begin();iter!=change_queue.end();++iter)
                 {
