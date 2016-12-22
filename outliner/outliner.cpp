@@ -33,19 +33,19 @@ namespace qLibrary{
             }
             return false;
         }
-        void checkOutline(cimg_library::CImg<unsigned char> &cimg,cimg_library::CImg<unsigned char> &outimg,bool* chkArr){
+        void checkOutline(cimg_library::CImg<unsigned char> &cimg,cimg_library::CImg<unsigned char> &outimg,bool** chkArr){
             int origwidth=cimg.width(),origlength=cimg.height();
 			std::cout << "width " << origwidth << " length " << origlength << std::endl;
             for(int iterx=0;iterx<origwidth;iterx++){
                 for(int itery=0;itery<origlength;itery++){
-                    checkOutlineAt(cimg,outimg,iterx,itery,*(chkArr+(iterx*itery)));
+                    checkOutlineAt(cimg,outimg,iterx,itery,chkArr[iterx][itery]);
                 }
             }
         }
     }
 }
 
-void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline,bool* chkArr)
+void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline,bool** chkArr)
 {
     qLibrary::Graphics::checkOutline(colorOptimizedImage,manDrawOutline,chkArr);
 }

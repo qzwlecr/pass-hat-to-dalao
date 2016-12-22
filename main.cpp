@@ -17,7 +17,7 @@ int main(int argv_size, const char **args)
 {
 	cimg_library::CImg<unsigned char> originImage,
     colorOptimizedImage;
-	bool* chkarr;
+	bool** chkarr;
 	struct analyseResultStruct analyseResult;
     if(argv_size < 2)
     {
