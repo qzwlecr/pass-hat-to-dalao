@@ -2,9 +2,9 @@
 #include <iostream>
 
 
-#define COLOR_R(cimg,x,y) (*(cimg.data(x,y,0,0)))
-#define COLOR_G(cimg,x,y) (*(cimg.data(x,y,0,1)))
-#define COLOR_B(cimg,x,y) (*(cimg.data(x,y,0,2)))
+#define COLOR_R(cddimg,x,y) (*(cddimg.data(x,y,0,0)))
+#define COLOR_G(cddimg,x,y) (*(cddimg.data(x,y,0,1)))
+#define COLOR_B(cddimg,x,y) (*(cddimg.data(x,y,0,2)))
 // notice the return val of cimg.data() is pointer.
 // so it need to be de-referenced
 
@@ -26,9 +26,9 @@ namespace qLibrary{
                 return false;// attempt to check the upper bound is not allowed.
             cimg_library::cimg_color currc(getColorAt(orig,x,y)),upperc(getColorAt(orig,x,y-1));
             if(checkColorDivergence(currc,upperc)){
-                COLOR_R(out,x,y)=255;
-                COLOR_G(out,x,y)=255;
-                COLOR_B(out,x,y)=255;
+                out(x,y,0,0)=255;
+                out(x,y,0,1)=255;
+                out(x,y,0,2)=255;
                 return true;
             }
             return false;

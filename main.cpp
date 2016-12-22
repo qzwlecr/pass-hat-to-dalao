@@ -8,8 +8,7 @@ void displayHelpInfo(){cout << "help"<<endl;}
 int main(int argv_size, const char **args)
 {
 	cimg_library::CImg<unsigned char> originImage,
-    colorOptimizedImage,
-    manDrawOutline;
+    colorOptimizedImage;
 	struct analyseResultStruct analyseResult;
     if(argv_size < 2)
     {
@@ -55,6 +54,7 @@ int main(int argv_size, const char **args)
         doColorOptimize(originImage,colorOptimizedImage);
         cout << "DEBUG-TERMINAGE:"<< endl;
         colorOptimizedImage.display();
+		cimg_library::CImg<unsigned char> manDrawOutline(originImage.width(),originImage.height(),1,3,0);
 		doOutlineDraw(colorOptimizedImage,manDrawOutline);
 		manDrawOutline.display();
         return 0;
