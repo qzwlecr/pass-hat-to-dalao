@@ -11,6 +11,7 @@ analyseResultStruct analyseResult;
 CImg<unsigned char> colorOptimizedImage,
     manDrawOutline,
     resultImage;
+pair<vector<string>, vector<string>> hatImageInfos;
 //config list(alias defined at stdafx.hpp)
 uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
 int eps=20;
@@ -155,6 +156,16 @@ void readConfig()
         }
         return make_pair(false, 0);
     };
+    auto strLeftEqual = [](const string &sa, const string &sb) -> bool {
+        if(sa.size() <= sb.size())
+            return false;
+        for(size_t cter = 0; cter < sb.size(); ++cter)
+        {
+            if(sa[cter]!=sb[cter])
+                return false;
+        }
+        return true;
+    }
 
     while(!is.eof())
     {
@@ -193,7 +204,16 @@ void readConfig()
             blur_number = checkedResult.second;
             continue;
         }
-
+        if(strLeftEqual(cfgValBuf, "lefthat="))
+        {
+            hatImageInfos.first.push_back(cfgValBuf.substr(8));
+            continue;
+        }
+        if(strLeftEqual(cfgValBuf, "righthat="))
+        {
+            hatImageInfos.second.push_back(cfgValBuf.substr(9));
+            continue;
+        }
     }
     return;
 }
