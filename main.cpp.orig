@@ -197,10 +197,16 @@ void readConfig()
         checkedResult = readCfgValueF(cfgValBuf, "blur_number");
         if(checkedResult.first)
         {
-            blur_number = checkedResult.second;
+<<<<<<< HEAD
+            background_size = checkedResult.second;
             continue;
         }
 
+=======
+            blur_number = checkedResult.second;
+            continue;
+        }
+>>>>>>> 963dcf0df605308ea3e7ced334a1e2f1bd4dd539
     }
     return;
 }

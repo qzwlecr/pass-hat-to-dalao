@@ -6,4 +6,9 @@ MIN_SCORE_TO_USE_OPENCV_RESULT=
 eps=20
 face_size=0.00001
 background_size=0
-blur_number=0.5
+<<<<<<< HEAD
+blur_size=0.5
+=======
+blur_size=2.5
+blur_number=
+>>>>>>> 963dcf0df605308ea3e7ced334a1e2f1bd4dd539

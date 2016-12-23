@@ -14,6 +14,12 @@ using std::array;
 extern uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT;
 //Global Variables
 //These references are guaranteed to be valid while calling your modules.
+struct analyseResultStruct;
+extern cimg_library::CImg<unsigned char> originImage;
+extern analyseResultStruct analyseResult;
+extern cimg_library::CImg<unsigned char> colorOptimizedImage,
+    manDrawOutline,
+    resultImage;
 //Pass result
 struct analyseResultStruct
 	{
@@ -25,9 +31,9 @@ struct analyseResultStruct
 };
 //Prototypes of function (to complete)
 //Assume thar 'originImage' is initialized properly.
-std::vector<std::vector<bool> > doColorOptimize(cimg_library::CImg<unsigned char> &originImage,cimg_library::CImg<unsigned char> &colorOptimizedImage);//Read originImage, output to colorOptimizedImage.
-bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &manDrawOutline,analyseResultStruct &analyseResult);//Read manDrawOutline, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
-void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline,std::vector<std::vector<bool> > chkarr);//Read colorOptimizedImage, output to manDrawOutline.
+std::vector<std::vector<bool> > doColorOptimize();//Read originImage, output to colorOptimizedImage.
+bool doOpencvAnalyse();//Read manDrawOutline, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
+void doOutlineDraw(std::vector<std::vector<bool> > chkarr);//Read colorOptimizedImage, output to manDrawOutline.
 bool doFinalAnalyse(cimg_library::CImg<unsigned char> &manDrawOutline,analyseResultStruct &analyseResult);//Read manDrawOutline, output to analyseResult. If can't recoginize given image, return false.
 void putHatOn(cimg_library::CImg<unsigned char> &originImage);//Select an hat and put it to originImage(according to analyseResult).
 namespace cimg_library{

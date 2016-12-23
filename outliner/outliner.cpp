@@ -45,7 +45,7 @@ namespace qLibrary{
     }
 }
 
-void doOutlineDraw(cimg_library::CImg<unsigned char> &colorOptimizedImage,cimg_library::CImg<unsigned char> &manDrawOutline,std::vector<std::vector<bool> > chkArr)
+void doOutlineDraw(std::vector<std::vector<bool> > chkArr)
 {
     qLibrary::Graphics::checkOutline(colorOptimizedImage,manDrawOutline,chkArr);
 }

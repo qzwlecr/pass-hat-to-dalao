@@ -2,7 +2,7 @@
 
 using namespace cimg_library;
 
-std::vector<std::vector<bool> > doColorOptimize(CImg<unsigned char> &originImage,CImg<unsigned char> &colorOptimizedImage)
+std::vector<std::vector<bool> > doColorOptimize()
 {
     colorOptimizedImage=originImage;
     std::queue<std::pair<int,int> > bfs_queue;
