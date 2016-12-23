@@ -8,6 +8,7 @@
 #include "CImgDir/CImg.h"
 #include <opencv2/core.hpp>
 #include <array>
+using std::array;
 #include <vector>
 #include <cstdint>
 extern uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT;

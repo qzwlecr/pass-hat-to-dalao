@@ -161,7 +161,10 @@ using cv::RotatedRect;
 using cv::Rect;
 using cv::Point2f;
 template <class point_t>
-bool EllipseToHatPosition(array<point_t, 4> points);
+bool EllipseToHatPosition(array<point_t, 4> points)
+{
+
+}
 bool RotatedRectToHatPosition(analyseResultStruct &analyseResult, const RotatedRect &arg)
 {
     const RotatedRect *pBestResult = &arg;
