@@ -17,6 +17,31 @@ extern pair<vector<string>, vector<string>> hatImageInfos;
 std::vector<std::string> DivideString(const std::string &tod, const char divider);
 //extern CImg<unsigned int> recolic_read_png(const string &where);
 
+unsigned char color_alpha_mix(unsigned char origc,unsigned char hatc,unsigned char alphav){
+    double hatpctg=((double)alphav)/((double)255);
+    double origpctg=1-hatpctg;
+    return origc*origpctg+hatpctg*hatc;
+}
+
+void img_draw_alphaIgn(int srcX,int srcY,cimg_library::CImg<unsigned char> &origimg,cimg_library::CImg<unsigned char> &hat){
+    // foundamental principle:
+    // check the alpha tunnel of every pixel,
+    // because this program doesn't need alphabend,
+    // so simply IGNORE all non-255 value,and thus make that simple.
+    for(int iterx=0;iterx<hat.width();iterx++){
+        if(srcX+iterx<0)
+            continue;
+        for(int itery=0;itery<hat.height();itery++){
+            if(srcY+itery<0)
+                continue;
+            origimg(srcX+iterx,srcY+itery,0,0)=color_alpha_mix(origimg(srcX+iterx,srcY+itery,0,0),hat(iterx,itery,0,0),hat(iterx,itery,0,3));
+            origimg(srcX+iterx,srcY+itery,0,1)=color_alpha_mix(origimg(srcX+iterx,srcY+itery,0,1),hat(iterx,itery,0,1),hat(iterx,itery,0,3));
+            origimg(srcX+iterx,srcY+itery,0,2)=color_alpha_mix(origimg(srcX+iterx,srcY+itery,0,2),hat(iterx,itery,0,2),hat(iterx,itery,0,3));
+        }
+    }
+    
+}
+
 void putHatOn()
 {
     //Judge which hat to select
@@ -48,7 +73,7 @@ void putHatOn()
     }
     Point2f srcBeginPoint(stof(resBuf[0]), stof(resBuf[1]));
     Point2f srcEndPoint(stof(resBuf[2]), stof(resBuf[3]));
-    CImg<float> srcHat(resBuf[4].c_str());
+    CImg<unsigned char> srcHat(resBuf[4].c_str());
     //methods...
     auto getLength = [](const Point2f &pa, const Point2f &pb) -> float {return sqrt((pb.y-pa.y)*(pb.y-pa.y) + (pb.x-pa.x)*(pb.x-pa.x));};
     auto getk = [](const Point2f &pa, const Point2f &pb) -> float {return (pa.y - pb.y)/(pa.x - pb.x);};
@@ -71,9 +96,11 @@ void putHatOn()
     Point2f offsetPointArrow(analyseResult.bottomLine.lineBegin.x - newSrcBeginPoint.x, analyseResult.bottomLine.lineBegin.y - newSrcBeginPoint.y);
     srcHat.display();
 
-    originImage.draw_image(offsetPointArrow.x, offsetPointArrow.y, srcHat, 0.0);
+    std::cout << offsetPointArrow.x << " " << offsetPointArrow.y << std::endl;
+    //originImage.draw_image(offsetPointArrow.x, offsetPointArrow.y,0,0, srcHat, 1.0);
+    img_draw_alphaIgn(offsetPointArrow.x,offsetPointArrow.y,originImage,srcHat);
 
-#error Failed to draw an rgba image(srcHat) to rgb image apparently.
+//#error Failed to draw an rgba image(srcHat) to rgb image apparently.
 
     return;
 }

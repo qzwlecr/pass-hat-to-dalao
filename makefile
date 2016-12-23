@@ -1,7 +1,7 @@
 main:main.o optimizer.o outliner.o recognizer.o manual_recognition.o
 	g++ -std=c++14 optimizer.o outliner.o recognizer.o manual_recognition.o main.o -lpng -O2 -L/usr/X11R6/lib -lm -lpthread -lX11 `pkg-config opencv --cflags --libs` -o main
 
-main.o: stdafx.hpp main.cpp
+main.o: stdafx.hpp main.cpp put_hat_on.hpp
 	g++ -std=c++14 main.cpp -O2 -Dcimg_use_png -lpng -lm -lz -lX11 -lpthread -c
 
 optimizer.o: stdafx.hpp optimizer/optimizer.cpp optimizer/optimizer.hpp 
