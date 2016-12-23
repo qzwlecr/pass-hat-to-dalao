@@ -5,6 +5,7 @@
    || defined(WIN64)    || defined(_WIN64) || defined(__WIN64__)
 #error Platform Error: Microsoft Windows detected.
 #endif
+extern uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT;
 #include "CImgDir/CImg.h"
 #include <array>
 #include <vector>

@@ -3,11 +3,17 @@
 #include <string>
 #include <vector>
 
+//global variable
 cimg_library::CImg<unsigned char> originImage;
+//config list(alias defined at stdafx.hpp)
+uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
+
 
 using namespace std;
 using namespace cimg_library;
 void displayHelpInfo(){cout << "help"<<endl;}
+void readConfig();
+
 int main(int argv_size, const char **args)
 {
     std::vector<std::vector<bool> > chkarr;
@@ -51,7 +57,7 @@ int main(int argv_size, const char **args)
             throw runtime_error("Argument analyzement error: switch case overflow.");
         }
     }
-    
+    readConfig();
     //Do initialization.
     CImg<unsigned char> colorOptimizedImage(originImage.width(),originImage.height(),1,3,0),
     manDrawOutline(originImage.width(),originImage.height(),1,3,0),
@@ -76,12 +82,9 @@ int main(int argv_size, const char **args)
 			}
 		}
         colorOptimizedImage.display();
-        cin.get();
 		boolArrayDisp.display();
-		cin.get();
 		doOutlineDraw(colorOptimizedImage,manDrawOutline,chkarr);
 		manDrawOutline.display();
-        cin.get();
 
 
         if(!doOpencvAnalyse(manDrawOutline, analyseResult))
@@ -105,4 +108,34 @@ int main(int argv_size, const char **args)
 
 
     return 0;*/
+}
+
+#include <fstream>
+void readConfig()
+{
+    //Remain default if config file doesn't exist.
+    istream is("config.cfg");
+    if(!is)
+        return;
+    string cfgValBuf;
+    char transBuffer[256];
+    auto readCfgValueU16 = [](const string &buf, const string &recordName) -> pair<bool, uint16_t> {
+        if(buf.size() < recordName.size() + 2)
+            return make_pair(false, 0);
+        if(buf.substr(0, recordName.size()) == recordName)
+        {
+            if(buf[recordName] == '=')
+                return make_pair(true, stoul(buf.substr(recordName + 1)));
+        }
+        return make_pair(false, 0);
+    }
+    while(!is.eof())
+    {
+        is.getline(transBuffer, 256);
+        cfgValBuf = transBuffer;
+        auto checkedResult = readCfgValueU16(cfgValBuf, "MIN_SCORE_TO_USE_OPENCV_RESULT");
+        if(checkedResult.first)
+            var_MIN_SCORE_TO_USE_OPENCV_RESULT = checkedResult.second;
+    }
+    return;
 }
