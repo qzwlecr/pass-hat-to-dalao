@@ -23,7 +23,7 @@ using cv::Point2f;
 using std::endl;
 using std::cout;
 
-bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,analyseResultStruct &analyseResult)//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
+bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 {
     cout << "***********************RECOLIC_DEBUG**************************" << endl;
     auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(colorOptimizedImage.get_MAT());

@@ -75,7 +75,7 @@ int main(int argv_size, const char **args)
 		originImage.display();
 		cout << "Press enter to continue:";
 		cin.get();
-        chkarr=doColorOptimize(originImage,colorOptimizedImage);
+        chkarr=doColorOptimize();
         cout << "DEBUG-TERMINAGE:"<< endl;
 		CImg<unsigned char> boolArrayDisp(originImage.width(),originImage.height(),1,3,0);
 		for(int iterx=0;iterx<originImage.width();iterx++){
@@ -89,11 +89,11 @@ int main(int argv_size, const char **args)
 		}
         colorOptimizedImage.display();
 		boolArrayDisp.display();
-		doOutlineDraw(colorOptimizedImage,manDrawOutline,chkarr);
+		doOutlineDraw(chkarr);
 		manDrawOutline.display();
 
 
-        if(!doOpencvAnalyse(manDrawOutline, analyseResult))
+        if(!doOpencvAnalyse())
         {
             //if(!doFinalAnalyse())
             {
