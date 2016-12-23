@@ -1,5 +1,5 @@
 main:main.o optimizer.o outliner.o recognizer.o manual_recognition.o
-	g++ -std=c++14 optimizer.o outliner.o recognizer.o main.o -O2 -L/usr/X11R6/lib -lm -lpthread -lX11 `pkg-config opencv --cflags --libs` -o main
+	g++ -std=c++14 optimizer.o outliner.o recognizer.o manual_recognition.o main.o -O2 -L/usr/X11R6/lib -lm -lpthread -lX11 `pkg-config opencv --cflags --libs` -o main
 
 main.o: stdafx.hpp main.cpp
 	g++ -std=c++14 main.cpp -O2 -L/usr/X11R6/lib -lm -lpthread -lX11 -c
