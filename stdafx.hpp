@@ -5,12 +5,21 @@
    || defined(WIN64)    || defined(_WIN64) || defined(__WIN64__)
 #error Platform Error: Microsoft Windows detected.
 #endif
-extern uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT;
 #include "CImgDir/CImg.h"
+#include <opencv2/core.hpp>
 #include <array>
+using std::array;
 #include <vector>
+#include <cstdint>
+extern uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT;
 //Global Variables
 //These references are guaranteed to be valid while calling your modules.
+struct analyseResultStruct;
+extern cimg_library::CImg<unsigned char> originImage;
+extern analyseResultStruct analyseResult;
+extern cimg_library::CImg<unsigned char> colorOptimizedImage,
+    manDrawOutline,
+    resultImage;
 //Pass result
 struct analyseResultStruct
 	{
@@ -53,4 +62,14 @@ namespace recolic_private_namespace{
     }
 }
 }
+
+//Ellipse to Hat position
+//auto concept PointType<typename value_type>{
+//    value_type x;
+//    value_type y;
+//}
+
+template <class point_t>
+bool EllipseToHatPosition(array<point_t, 4> points);
+
 #endif // STDAFX_HPP_INCLUDED

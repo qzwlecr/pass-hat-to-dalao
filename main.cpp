@@ -2,22 +2,29 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-//global variable
-cimg_library::CImg<unsigned char> originImage;
-//config list(alias defined at stdafx.hpp)
-uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
-
-
 using namespace std;
 using namespace cimg_library;
+
+//global variable
+CImg<unsigned char> originImage;
+analyseResultStruct analyseResult;
+CImg<unsigned char> colorOptimizedImage,
+    manDrawOutline,
+    resultImage;
+//config list(alias defined at stdafx.hpp)
+uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
+int eps=20;
+float face_size=0;
+float background_size=0;
+
+
 void displayHelpInfo(){cout << "help"<<endl;}
 void readConfig();
 
 int main(int argv_size, const char **args)
 {
     std::vector<std::vector<bool> > chkarr;
-	analyseResultStruct analyseResult;
+
     if(argv_size < 2)
     {
         displayHelpInfo();
@@ -59,15 +66,13 @@ int main(int argv_size, const char **args)
     }
     readConfig();
     //Do initialization.
-    CImg<unsigned char> colorOptimizedImage(originImage.width(),originImage.height(),1,3,0),
-    manDrawOutline(originImage.width(),originImage.height(),1,3,0),
-    resultImage(originImage.width(),originImage.height(),1,3,0);
-//    CImg<unsigned char> black_init(originImage);
+    CImg<unsigned char> black_init(originImage.width(),originImage.height(),1,3,0);
 //    black_init.fill(255);
-//    colorOptimizedImage = manDrawOutline = resultImage = black_init;
+    colorOptimizedImage = manDrawOutline = resultImage = black_init;
 //    try
 //    {
 		originImage.display();
+		cout << "Press enter to continue:";
 		cin.get();
         chkarr=doColorOptimize(originImage,colorOptimizedImage);
         cout << "DEBUG-TERMINAGE:"<< endl;
@@ -114,28 +119,74 @@ int main(int argv_size, const char **args)
 void readConfig()
 {
     //Remain default if config file doesn't exist.
-    istream is("config.cfg");
+    ifstream is("config.cfg");
     if(!is)
         return;
     string cfgValBuf;
     char transBuffer[256];
+    //Define methods.
     auto readCfgValueU16 = [](const string &buf, const string &recordName) -> pair<bool, uint16_t> {
         if(buf.size() < recordName.size() + 2)
             return make_pair(false, 0);
         if(buf.substr(0, recordName.size()) == recordName)
         {
-            if(buf[recordName] == '=')
-                return make_pair(true, stoul(buf.substr(recordName + 1)));
+            if(buf[recordName.size()] == '=')
+                return make_pair(true, static_cast<uint16_t>(stoul(buf.substr(recordName.size() + 1))));
         }
         return make_pair(false, 0);
-    }
+    };
+    auto readCfgValueI = [](const string &buf, const string &recordName) -> pair<bool, int> {
+        if(buf.size() < recordName.size() + 2)
+            return make_pair(false, 0);
+        if(buf.substr(0, recordName.size()) == recordName)
+        {
+            if(buf[recordName.size()] == '=')
+                return make_pair(true, stoi(buf.substr(recordName.size() + 1)));
+        }
+        return make_pair(false, 0);
+    };
+    auto readCfgValueF = [](const string &buf, const string &recordName) -> pair<bool, float> {
+        if(buf.size() < recordName.size() + 2)
+            return make_pair(false, 0);
+        if(buf.substr(0, recordName.size()) == recordName)
+        {
+            if(buf[recordName.size()] == '=')
+                return make_pair(true, stof(buf.substr(recordName.size() + 1)));
+        }
+        return make_pair(false, 0);
+    };
+
     while(!is.eof())
     {
         is.getline(transBuffer, 256);
         cfgValBuf = transBuffer;
+        //Now, read and initialize config val.
+        if(cfgValBuf.empty() || cfgValBuf[0] == '#')
+            continue;
         auto checkedResult = readCfgValueU16(cfgValBuf, "MIN_SCORE_TO_USE_OPENCV_RESULT");
         if(checkedResult.first)
+        {
             var_MIN_SCORE_TO_USE_OPENCV_RESULT = checkedResult.second;
+            continue;
+        }
+        checkedResult = readCfgValueI(cfgValBuf, "eps");
+        if(checkedResult.first)
+        {
+            eps = checkedResult.second;
+            continue;
+        }
+        checkedResult = readCfgValueF(cfgValBuf, "face_size");
+        if(checkedResult.first)
+        {
+            face_size = checkedResult.second;
+            continue;
+        }
+        checkedResult = readCfgValueF(cfgValBuf, "background_size");
+        if(checkedResult.first)
+        {
+            background_size = checkedResult.second;
+            continue;
+        }
     }
     return;
 }

@@ -8,10 +8,16 @@
 using namespace cimg_library;
 typedef unsigned char uchar;
 
+<<<<<<< HEAD
+const int eps=20;
+const float blur_number=2.5;
+const float face_size=0.001;
+const float background_size=0;
+=======
 extern int eps;
 extern float face_size;
 extern float background_size;
-extern float blur_number;
+>>>>>>> 601f00f61e42da696f8b64c69f6c544cb8340c71
 const int dx[]={0,0,1,1,1,-1,-1,-1};
 const int dy[]={1,-1,0,1,-1,0,1,-1};
 
