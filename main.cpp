@@ -74,8 +74,6 @@ int main(int argv_size, const char **args)
 //    try
 //    {
 		originImage.display();
-		cout << "Press enter to continue:";
-		cin.get();
         chkarr=doColorOptimize();
         cout << "DEBUG-TERMINAGE:"<< endl;
 		CImg<unsigned char> boolArrayDisp(originImage.width(),originImage.height(),1,3,0);

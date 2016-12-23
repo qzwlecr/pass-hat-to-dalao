@@ -39,7 +39,6 @@
 
 #test
 *.jpg
-*.png
 *.jpeg
 *.tif
 *.bmp

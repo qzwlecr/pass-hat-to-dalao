@@ -63,6 +63,8 @@ void putHatOn()
     float sinAngle = sin(offsetAngle), cosAngle = cos(offsetAngle);
     Point2f newSrcBeginPoint(originHeight*sinAngle + srcBeginPoint.x*cosAngle - srcBeginPoint.y*sinAngle, srcBeginPoint.x*sinAngle + srcBeginPoint.y*cosAngle);
     Point2f offsetPointArrow(analyseResult.bottomLine.lineBegin.x - newSrcBeginPoint.x, analyseResult.bottomLine.lineBegin.y - newSrcBeginPoint.y);
+    srcHat.display();
+    cout << "RECOLIC_DEBUG > Drawing at " << offsetPointArrow.x << ',' << offsetPointArrow.y << endl;
     originImage.draw_image(offsetPointArrow.x, offsetPointArrow.y, srcHat);
     return;
 }
