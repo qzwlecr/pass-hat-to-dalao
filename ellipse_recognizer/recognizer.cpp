@@ -19,6 +19,8 @@ namespace qLibrary{
             std::vector<std::vector<cv::Point> > ellipses;
             //cv::threshold(grayimg,bin_img,0,255,cv::THRESH_BINARY|cv::THRESH_OTSU);// can be replaced by self_made binary_made func(see outliner)
             cv::findContours(copy_img,ellipses,CV_RETR_LIST,CV_CHAIN_APPROX_NONE);
+            cimg_library::CImg<unsigned char> coned_img(copy_img);
+            coned_img.display();
             for (auto &each : ellipses){
                 unsigned int counts= each.size();// how much points contains.
                 if(counts<100||counts>1000)
