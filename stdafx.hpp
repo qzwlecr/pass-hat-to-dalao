@@ -14,6 +14,12 @@ using std::array;
 extern uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT;
 //Global Variables
 //These references are guaranteed to be valid while calling your modules.
+struct analyseResultStruct;
+extern cimg_library::CImg<unsigned char> originImage;
+extern analyseResultStruct analyseResult;
+extern cimg_library::CImg<unsigned char> colorOptimizedImage,
+    manDrawOutline,
+    resultImage;
 //Pass result
 struct analyseResultStruct
 	{

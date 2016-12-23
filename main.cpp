@@ -2,24 +2,29 @@
 #include <iostream>
 #include <string>
 #include <vector>
+using namespace std;
+using namespace cimg_library;
 
 //global variable
-cimg_library::CImg<unsigned char> originImage;
+CImg<unsigned char> originImage;
+analyseResultStruct analyseResult;
+CImg<unsigned char> colorOptimizedImage,
+    manDrawOutline,
+    resultImage;
 //config list(alias defined at stdafx.hpp)
 uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
 int eps=20;
 float face_size=0;
 float background_size=0;
 
-using namespace std;
-using namespace cimg_library;
+
 void displayHelpInfo(){cout << "help"<<endl;}
 void readConfig();
 
 int main(int argv_size, const char **args)
 {
     std::vector<std::vector<bool> > chkarr;
-	analyseResultStruct analyseResult;
+
     if(argv_size < 2)
     {
         displayHelpInfo();
@@ -61,12 +66,9 @@ int main(int argv_size, const char **args)
     }
     readConfig();
     //Do initialization.
-    CImg<unsigned char> colorOptimizedImage(originImage.width(),originImage.height(),1,3,0),
-    manDrawOutline(originImage.width(),originImage.height(),1,3,0),
-    resultImage(originImage.width(),originImage.height(),1,3,0);
-//    CImg<unsigned char> black_init(originImage);
+    CImg<unsigned char> black_init(originImage.width(),originImage.height(),1,3,0);
 //    black_init.fill(255);
-//    colorOptimizedImage = manDrawOutline = resultImage = black_init;
+    colorOptimizedImage = manDrawOutline = resultImage = black_init;
 //    try
 //    {
 		originImage.display();
