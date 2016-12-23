@@ -10,6 +10,10 @@
 
   - OpenCV & CImg 图像处理库
   
+# Usage
+
+  - ./main 头像名称
+
 # Notice
 
 CImg已经附带。使用者需要手动安装OpenCV，否则无法通过编译。
@@ -21,5 +25,5 @@ CImg已经附带。使用者需要手动安装OpenCV，否则无法通过编译�
 # Author
 
   - imzhwk(git@klx3300)
-  - qzwlecr(git@qzwlecr)
+  - Lichen Zhang(git@qzwlecr)
   - Recolic Keghart(git@recolic)
