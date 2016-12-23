@@ -1,4 +1,5 @@
 #include "stdafx.hpp"
+#include "put_hat_on.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -11,13 +12,13 @@ analyseResultStruct analyseResult;
 CImg<unsigned char> colorOptimizedImage,
     manDrawOutline,
     resultImage;
+pair<vector<string>, vector<string>> hatImageInfos;
 //config list(alias defined at stdafx.hpp)
 uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
 int eps=20;
 float face_size=0;
 float background_size=0;
-float blur_number = 0;
-
+float blur_number=2.5;
 
 void displayHelpInfo(){cout << "help"<<endl;}
 void readConfig();
@@ -75,7 +76,7 @@ int main(int argv_size, const char **args)
 		originImage.display();
 		cout << "Press enter to continue:";
 		cin.get();
-        chkarr=doColorOptimize(originImage,colorOptimizedImage);
+        chkarr=doColorOptimize();
         cout << "DEBUG-TERMINAGE:"<< endl;
 		CImg<unsigned char> boolArrayDisp(originImage.width(),originImage.height(),1,3,0);
 		for(int iterx=0;iterx<originImage.width();iterx++){
@@ -89,11 +90,11 @@ int main(int argv_size, const char **args)
 		}
         colorOptimizedImage.display();
 		boolArrayDisp.display();
-		doOutlineDraw(colorOptimizedImage,manDrawOutline,chkarr);
+		doOutlineDraw(chkarr);
 		manDrawOutline.display();
 
 
-        if(!doOpencvAnalyse(manDrawOutline, analyseResult))
+        if(!doOpencvAnalyse())
         {
             //if(!doFinalAnalyse())
             {
@@ -104,16 +105,17 @@ int main(int argv_size, const char **args)
         }
         cout << "Result:beginx=" << analyseResult.bottomLine.lineBegin.x << "beginy=" << analyseResult.bottomLine.lineBegin.y << endl;
         cout << "Result:endx=" << analyseResult.bottomLine.lineEnd.x << "endy=" << analyseResult.bottomLine.lineEnd.y << endl;
-        /*putHatOn();
+        putHatOn();
 //    }
+    originImage.display();
     if(outputFileName.empty())
         outputFileName = "output.png";
-    resultImage.save_png(outputFileName.c_str());
+    originImage.save_png(outputFileName.c_str());
     cout << "Done. Result saved to " << outputFileName << " successfully." << endl;
 
 
 
-    return 0;*/
+    return 0;
 }
 
 #include <fstream>
@@ -156,6 +158,16 @@ void readConfig()
         }
         return make_pair(false, 0);
     };
+    auto strLeftEqual = [](const string &sa, const string &sb) -> bool {
+        if(sa.size() <= sb.size())
+            return false;
+        for(size_t cter = 0; cter < sb.size(); ++cter)
+        {
+            if(sa[cter]!=sb[cter])
+                return false;
+        }
+        return true;
+    };
 
     while(!is.eof())
     {
@@ -192,6 +204,16 @@ void readConfig()
         if(checkedResult.first)
         {
             blur_number = checkedResult.second;
+            continue;
+        }
+        if(strLeftEqual(cfgValBuf, "lefthat="))
+        {
+            hatImageInfos.first.push_back(cfgValBuf.substr(8));
+            continue;
+        }
+        if(strLeftEqual(cfgValBuf, "righthat="))
+        {
+            hatImageInfos.second.push_back(cfgValBuf.substr(9));
             continue;
         }
     }

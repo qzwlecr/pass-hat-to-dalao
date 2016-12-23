@@ -23,10 +23,10 @@ using cv::Point2f;
 using std::endl;
 using std::cout;
 
-bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,analyseResultStruct &analyseResult)//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
+bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 {
     cout << "***********************RECOLIC_DEBUG**************************" << endl;
-    auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(colorOptimizedImage.get_MAT());
+    auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(manDrawOutline.get_MAT());
     //DEBUG INFO
     cout << "BUFFER SIZE:" << recognizedBuf.size() << endl;
 
@@ -49,7 +49,7 @@ bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,anal
         if(toJudge.center.y * 2 - limitedRect.height > originHeight)
             return 0;
         float unbalanceRate = limitedRect.height / limitedRect.width;
-        if(unbalanceRate > 3 || unbalanceRate < 0.33)
+        if(unbalanceRate > 4 || unbalanceRate < 0.25)
             return 0;
         //give score.
         int16_t toReturn = (limitedRect.height + limitedRect.width) - toJudge.center.y;
@@ -61,6 +61,7 @@ bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,anal
     for(RotatedRect &currentCheckRect : recognizedBuf)
     {
         uint16_t currentScore = scoreRotatedRect(currentCheckRect, originHeight);
+        cout << "? >" << currentScore << " got, height=" << currentCheckRect.boundingRect().height << endl;
         if(currentScore && currentScore > maxScore)
         {
             maxScore = currentScore;
@@ -93,7 +94,7 @@ bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,anal
             dxMin = curr.x;
             xMin = cter;
         }
-        if(curr.x < dxMax)
+        if(curr.x > dxMax)
         {
             dxMax = curr.x;
             xMax = cter;
@@ -111,10 +112,20 @@ bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,anal
     }
     float k1 = getk(tmpBuf[xMax], tmpBuf[xMin]),
         k2 = getk(tmpBuf[spareA], tmpBuf[spareB]);
+    if(std::isnan(k1))
+    {
+        k1 = (k2>0?0-100:100);
+    }
+    else if(std::isnan(k2))
+    {
+        k2 = (k1>0?0-100:100);
+    }
     float k1_origin = k1, k2_origin = k2;
     k1 = (k1>0?k1:0-k1);
     k2 = (k2>0?k2:0-k2);
+    cout << "CALC > absk1=" << k1 << ", absk2=" << k2 << endl;
     float kForAngle = 0;
+    cout << "CALC > spareA=" << spareA << "spareB=" << spareB << "xMin=" << xMin << "xMax=" << xMax << endl;
     if(k1<k2)
     {
         kForAngle = k1_origin;
@@ -136,8 +147,18 @@ bool doOpencvAnalyse(cimg_library::CImg<unsigned char> &colorOptimizedImage,anal
         else
             left = tmpBuf[spareB], right = tmpBuf[spareA];
     }
+    cout << "CALC >head";
+    printPoint(head);
+    cout << "bottom";
+    printPoint(bottom);
+    cout << "left";
+    printPoint(left);
+    cout << "right";
+    printPoint(right);
+    cout << endl;
     //Coordinate convertion start...
     float offsetAngle = atan(kForAngle); //rad
+    cout << "CALC > offsetAngle=" << offsetAngle << endl;
     float cosAngle = cos(offsetAngle),
         sinAngle = sin(offsetAngle),
         tanAngle = tan(offsetAngle);
@@ -237,96 +258,5 @@ bool EllipseToHatPosition(array<point_t, 4> tmpBuf)
     analyseResult.bottomLine.lineEnd = coordinateConvert(lineEnd);
     analyseResult.bSuccess = true;
     return true;
-}/*
-bool RotatedRectToHatPosition(analyseResultStruct &analyseResult, const RotatedRect &arg)
-{
-    const RotatedRect *pBestResult = &arg;
-    //math compute...
-    //methods
-    auto getk = [](const Point2f &pa, const Point2f &pb) -> float {return (pa.y - pb.y)/(pa.x - pb.x);};
-    auto getMiddlePoint = [](const Point2f &pa, const Point2f &pb) -> Point2f {return Point2f((pa.x+pb.x)/2, (pa.y+pb.y)/2);};
-    //compare k1 k2 and get 'a' 'b'
-    Point2f head, bottom, left, right;
-    size_t xMax = 0, xMin = 0; //src xy
-    size_t spareA = 4, spareB = 4;
-    float dxMax = 0, dxMin = 10000.0;//src xy val buf.
-    Point2f tmpBuf[4];
-    {
-        Point2f RectPoints[4];
-        pBestResult->points(RectPoints);
-        for(size_t cter = 0;cter < 4;++cter)
-            tmpBuf[cter] = getMiddlePoint(RectPoints[cter], RectPoints[(cter+1)%4]);
-    }
-    for(size_t cter = 0;cter < 4;++cter)
-    {
-        Point2f &curr = tmpBuf[cter];
-        if(curr.x < dxMin)
-        {
-            dxMin = curr.x;
-            xMin = cter;
-        }
-        if(curr.x < dxMax)
-        {
-            dxMax = curr.x;
-            xMax = cter;
-        }
-    }
-    for(size_t cter = 0;cter < 4;++cter)
-    {
-        if(xMax != cter && xMin != cter)
-        {
-            if(spareA == 4)
-                spareA = cter;
-            else
-                spareB = cter;
-        }
-    }
-    float k1 = getk(tmpBuf[xMax], tmpBuf[xMin]),
-        k2 = getk(tmpBuf[spareA], tmpBuf[spareB]);
-    float k1_origin = k1, k2_origin = k2;
-    k1 = (k1>0?k1:0-k1);
-    k2 = (k2>0?k2:0-k2);
-    float kForAngle = 0;
-    if(k1<k2)
-    {
-        kForAngle = k1_origin;
-        if(tmpBuf[spareA].y < tmpBuf[spareB].y)
-            head = tmpBuf[spareA], bottom = tmpBuf[spareB];
-        else
-            head = tmpBuf[spareB], bottom = tmpBuf[spareA];
-        left = tmpBuf[xMin], right = tmpBuf[xMax];
-    }
-    else
-    {
-        kForAngle = k2_origin;
-        if(tmpBuf[xMax].y < tmpBuf[xMin].y)
-            head = tmpBuf[xMax], bottom = tmpBuf[xMin];
-        else
-            head = tmpBuf[xMin], bottom = tmpBuf[xMax];
-        if(tmpBuf[spareA].x < tmpBuf[spareB].x)
-            left = tmpBuf[spareA], right = tmpBuf[spareB];
-        else
-            left = tmpBuf[spareB], right = tmpBuf[spareA];
-    }
-    //Coordinate convertion start...
-    float offsetAngle = atan(kForAngle); //rad
-    float cosAngle = cos(offsetAngle),
-        sinAngle = sin(offsetAngle),
-        tanAngle = tan(offsetAngle);
-    const Point2f &offsetPoint = pBestResult->center;
-    float varA = sqrt((left.x-right.x)*(left.x-right.x) + (left.y-right.y)*(left.y-right.y)) / 2,
-        varB = sqrt((head.x-bottom.x)*(head.x-bottom.x) + (head.y-bottom.y)*(head.y-bottom.y)) / 2;
-    Point2f lineStart(0-0.8660254038*varA, varB / 2), lineEnd(0.8660254038*varA, varB / 2);
-    auto coordinateConvert = [&](Point2f &toConvert) -> Point2f {
-        Point2f toReturn(0,0);
-        toReturn.x = offsetPoint.x + toConvert.x * cosAngle - toConvert.y * sinAngle;
-        toReturn.y = offsetPoint.y - toConvert.x * sinAngle - toConvert.y * cosAngle;
-        return toReturn;
-    };
-    analyseResult.bottomLine.lineBegin = coordinateConvert(lineStart);
-    analyseResult.bottomLine.lineEnd = coordinateConvert(lineEnd);
-    analyseResult.bSuccess = true;
-    return true;
 }
-*/
 #endif
