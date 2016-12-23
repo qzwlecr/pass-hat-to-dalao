@@ -74,7 +74,8 @@ namespace qLibrary{
             delete ellipse;
         }
         std::vector<qEllipse> recognize_ellipse(cimg_library::CImg<unsigned char> &coroutine){
-            std::array<qEllipseStorager,(int)sqrt(sq(coroutine.width())+sq(coroutine.height()))+1> ellipses;
+            int cross=(int)sqrt(sq(coroutine.width())+sq(coroutine.height()))+1;
+            std::array<qEllipseStorager,cross> ellipses;
             bool checkArr[coroutine.width()][coroutine.height()];
             std::vector<qEllipse> output;
             // clear array
@@ -137,7 +138,7 @@ namespace qLibrary{
                         if(ellipses[iter].votes>MIN_VOTES){
                             qEllipse tmpell=*(ellipse[iter].ellipse);
                             output.push_back(tmpell);
-                            for( auto pts : ellipse[iter].followed_points ){
+                            for( auto pts : ellipses[iter].followed_points ){
                                 checkArr[pts.x][pts.y]=false;
                             }
                         }
