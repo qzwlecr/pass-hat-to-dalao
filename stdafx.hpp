@@ -34,8 +34,8 @@ struct analyseResultStruct
 std::vector<std::vector<bool> > doColorOptimize();//Read originImage, output to colorOptimizedImage.
 bool doOpencvAnalyse();//Read manDrawOutline, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 void doOutlineDraw(std::vector<std::vector<bool> > chkarr);//Read colorOptimizedImage, output to manDrawOutline.
-bool doFinalAnalyse(cimg_library::CImg<unsigned char> &manDrawOutline,analyseResultStruct &analyseResult);//Read manDrawOutline, output to analyseResult. If can't recoginize given image, return false.
-void putHatOn(cimg_library::CImg<unsigned char> &originImage);//Select an hat and put it to originImage(according to analyseResult).
+bool doFinalAnalyse();//Read manDrawOutline, output to analyseResult. If can't recoginize given image, return false.
+void putHatOn();//Select an hat and put it to originImage(according to analyseResult).
 namespace cimg_library{
 class cimg_color;
 namespace recolic_private_namespace{
