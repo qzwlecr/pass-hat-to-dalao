@@ -70,10 +70,15 @@ namespace qLibrary{
             ellipse=NULL;
             vote=0;
         }
+        qEllipseStorager::~qEllipseStorager(){
+            delete ellipse;
+        }
         std::vector<qEllipse> recognize_ellipse(cimg_library::CImg<unsigned char> &coroutine){
-            std::array<qEllipseStorager,(int)sqrt(sq(coroutine.width())+sq(coroutine.length()))+1> ellipses;
+            std::array<qEllipseStorager,(int)sqrt(sq(coroutine.width())+sq(coroutine.height()))+1> ellipses;
             bool checkArr[coroutine.width()][coroutine.height()];
+            std::vector<qEllipse> output;
             // clear array
+            qPoint2 screen_embody(coroutine.width(),coroutine.height());
             for(int iterx=0;iterx<coroutine.width();iterx++){
                 for(int itery=0;itery<coroutine.height();itery++){
                     checkArr[iterx][itery]=true;
@@ -84,6 +89,7 @@ namespace qLibrary{
                 for(int itery=0;itery<coroutine.height();itery++){
                     if(coroutine(iterx,itery,0,0)){
                         qPoint2 tmp(iterx,itery);
+                        tmp.tocp(screen_embody);
                         coroutinePoints.push_back(tmp);
                     }
                 }
@@ -100,7 +106,6 @@ namespace qLibrary{
                     if((la1-la2)<MIN_ELLIPSE_LAXIS)
                         continue;
                     // all param check completed,start ellipse generation
-                    qEllipse *ellptr = new qEllipse(la1,la2);
                     for(auto &another : coroutinePoints){
                         if((another==la1) or (another==la2))
                             continue;
@@ -109,6 +114,7 @@ namespace qLibrary{
                         if((la1%la2)-another<MIN_ELLIPSE_SAXIS)
                             continue;
                         // 3 points get,start voting
+                        qEllipse *ellptr=new qEllipse(la1,la2);
                         ellptr->append(another);
                         if(ellipses[ellptr->shaxis].ellipse!=NULL){
                             // already have
@@ -123,10 +129,26 @@ namespace qLibrary{
                             ellipses[ellptr->shaxis].followed_points.push_back(another);
                         }
                     }
-                    
+                    // all another points checked.
+                    // now start checking votes.
+                    for(int iter=0;iter<ellipses.size();iter++){
+                        if(ellipses[iter].ellipse==NULL)
+                            continue;
+                        if(ellipses[iter].votes>MIN_VOTES){
+                            qEllipse tmpell=*(ellipse[iter].ellipse);
+                            output.push_back(tmpell);
+                            for( auto pts : ellipse[iter].followed_points ){
+                                checkArr[pts.x][pts.y]=false;
+                            }
+                        }
+                    }
+                    // votes check complete
+                    // now clear arrays
+                    ellipses.clear();
+
                 }
             }
-
+            return output;
         }
     }
 }

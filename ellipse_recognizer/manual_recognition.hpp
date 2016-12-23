@@ -8,6 +8,7 @@ namespace qLibrary{
     namespace Graphics{
         const int MIN_ELLIPSE_LAXIS = 30;
         const int MIN_ELLIPSE_SAXIS = 20;
+        const int MIN_VOTES = 30;
         class qPoint2{
             public:
                 int x;
@@ -46,6 +47,7 @@ namespace qLibrary{
                 int vote;
                 std::vector<qPoint2> followed_points;
                 qEllipseStorager();
+                ~qEllipseStorager();
         };
         std::vector<qEllipse> recognize_ellipse(cimg_library::CImg<unsigned char> &coroutine);
     }
