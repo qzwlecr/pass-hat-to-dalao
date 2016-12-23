@@ -49,7 +49,7 @@ bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and ou
         if(toJudge.center.y * 2 - limitedRect.height > originHeight)
             return 0;
         float unbalanceRate = limitedRect.height / limitedRect.width;
-        if(unbalanceRate > 3 || unbalanceRate < 0.33)
+        if(unbalanceRate > 4 || unbalanceRate < 0.25)
             return 0;
         //give score.
         int16_t toReturn = (limitedRect.height + limitedRect.width) - toJudge.center.y;

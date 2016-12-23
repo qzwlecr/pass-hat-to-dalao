@@ -1,4 +1,5 @@
 #include "stdafx.hpp"
+#include "put_hat_on.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -104,16 +105,17 @@ int main(int argv_size, const char **args)
         }
         cout << "Result:beginx=" << analyseResult.bottomLine.lineBegin.x << "beginy=" << analyseResult.bottomLine.lineBegin.y << endl;
         cout << "Result:endx=" << analyseResult.bottomLine.lineEnd.x << "endy=" << analyseResult.bottomLine.lineEnd.y << endl;
-        /*putHatOn();
+        putHatOn();
 //    }
+    originImage.display();
     if(outputFileName.empty())
         outputFileName = "output.png";
-    resultImage.save_png(outputFileName.c_str());
+    originImage.save_png(outputFileName.c_str());
     cout << "Done. Result saved to " << outputFileName << " successfully." << endl;
 
 
 
-    return 0;*/
+    return 0;
 }
 
 #include <fstream>
@@ -165,7 +167,7 @@ void readConfig()
                 return false;
         }
         return true;
-    }
+    };
 
     while(!is.eof())
     {
