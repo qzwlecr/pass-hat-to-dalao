@@ -2,14 +2,15 @@
 #define QZWLECR_OPTIMIZER_H
 #include"../stdafx.hpp"
 #include<queue>
-#include<iostream>
 #include<map>
+#include<vector>
 
 using namespace cimg_library;
 typedef unsigned char uchar;
 
 const int eps=20;
-const float face_size=0;
+const float blur_number=2.5;
+const float face_size=0.001;
 const float background_size=0;
 const int dx[]={0,0,1,1,1,-1,-1,-1};
 const int dy[]={1,-1,0,1,-1,0,1,-1};
