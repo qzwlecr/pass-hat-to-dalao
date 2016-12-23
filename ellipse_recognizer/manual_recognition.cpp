@@ -75,7 +75,7 @@ namespace qLibrary{
         }
         std::vector<qEllipse> recognize_ellipse(cimg_library::CImg<unsigned char> &coroutine){
             int cross=(int)sqrt(sq(coroutine.width())+sq(coroutine.height()))+1;
-            std::array<qEllipseStorager,cross> ellipses;
+            std::array<qEllipseStorager,1024> ellipses;
             bool checkArr[coroutine.width()][coroutine.height()];
             std::vector<qEllipse> output;
             // clear array
