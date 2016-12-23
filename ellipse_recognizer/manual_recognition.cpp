@@ -119,12 +119,12 @@ namespace qLibrary{
                         ellptr->append(another);
                         if(ellipses[ellptr->shaxis].ellipse!=NULL){
                             // already have
-                            ellipses[ellptr->shaxis].votes+=1;
+                            ellipses[ellptr->shaxis].vote+=1;
                             ellipses[ellptr->shaxis].followed_points.push_back(another);
                             delete ellptr;
                         }else{
                             ellipses[ellptr->shaxis].ellipse=ellptr;
-                            ellipses[ellptr->shaxis].votes=1;
+                            ellipses[ellptr->shaxis].vote=1;
                             ellipses[ellptr->shaxis].followed_points.push_back(la1);
                             ellipses[ellptr->shaxis].followed_points.push_back(la2);
                             ellipses[ellptr->shaxis].followed_points.push_back(another);
@@ -135,17 +135,18 @@ namespace qLibrary{
                     for(int iter=0;iter<ellipses.size();iter++){
                         if(ellipses[iter].ellipse==NULL)
                             continue;
-                        if(ellipses[iter].votes>MIN_VOTES){
-                            qEllipse tmpell=*(ellipse[iter].ellipse);
+                        if(ellipses[iter].vote>MIN_VOTES){
+                            qEllipse tmpell=*(ellipses[iter].ellipse);
                             output.push_back(tmpell);
                             for( auto pts : ellipses[iter].followed_points ){
                                 checkArr[pts.x][pts.y]=false;
                             }
                         }
+                        // clear
+                        delete ellipses[iter].ellipse;
+                        ellipses[iter].ellipse=NULL;
+                        ellipses[iter].vote=0;
                     }
-                    // votes check complete
-                    // now clear arrays
-                    ellipses.clear();
 
                 }
             }
