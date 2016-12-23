@@ -1,5 +1,6 @@
 #include "stdafx.hpp"
 #include "put_hat_on.hpp"
+#include "ellipse_recognizer/manual_recognition.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -90,6 +91,17 @@ int main(int argv_size, const char **args)
 		boolArrayDisp.display();
 		doOutlineDraw(chkarr);
 		manDrawOutline.display();
+        qLibrary::Graphics::qPoint2 screen_embody(manDrawOutline.width(),manDrawOutline.height());
+        auto ret=qLibrary::Graphics::recognize_ellipse(manDrawOutline);
+        for(auto x:ret){
+            x.la1.tosp(screen_embody);
+            x.la2.tosp(screen_embody);
+            x.center.tosp(screen_embody);
+            cout << "ELLIPSE>> LA1: " << x.la1.x <<","<<x.la1.y<<" LA2:" <<x.la2.x<<","<<x.la2.y<<endl;
+        }
+
+        return 0;
+        // prog shuts here
 
 
         if(!doOpencvAnalyse())
