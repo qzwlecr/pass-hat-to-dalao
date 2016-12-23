@@ -2,6 +2,7 @@
 #include "math.h"
 #include <set>
 #include <vector>
+#include <array>
 
 double sq(double x){
     return x*x;
@@ -65,8 +66,12 @@ namespace qLibrary{
         bool qEllipseComparator::operator()(const qEllipse &a,const qEllipse &b){
             return a.shaxis<=b.shaxis;
         }
+        qEllipseStorager::qEllipseStorager(){
+            ellipse=NULL;
+            vote=0;
+        }
         std::vector<qEllipse> recognize_ellipse(cimg_library::CImg<unsigned char> &coroutine){
-            std::set<qEllipse,qEllipseComparator> ellipses;
+            std::array<qEllipseStorager,(int)sqrt(sq(coroutine.width())+sq(coroutine.length()))+1> ellipses;
             bool checkArr[coroutine.width()][coroutine.height()];
             // clear array
             for(int iterx=0;iterx<coroutine.width();iterx++){
@@ -94,6 +99,8 @@ namespace qLibrary{
                         continue;
                     if((la1-la2)<MIN_ELLIPSE_LAXIS)
                         continue;
+                    // all param check completed,start ellipse generation
+                    qEllipse *ellptr = new qEllipse(la1,la2);
                     for(auto &another : coroutinePoints){
                         if((another==la1) or (another==la2))
                             continue;
@@ -101,6 +108,20 @@ namespace qLibrary{
                             continue;
                         if((la1%la2)-another<MIN_ELLIPSE_SAXIS)
                             continue;
+                        // 3 points get,start voting
+                        ellptr->append(another);
+                        if(ellipses[ellptr->shaxis].ellipse!=NULL){
+                            // already have
+                            ellipses[ellptr->shaxis].votes+=1;
+                            ellipses[ellptr->shaxis].followed_points.push_back(another);
+                            delete ellptr;
+                        }else{
+                            ellipses[ellptr->shaxis].ellipse=ellptr;
+                            ellipses[ellptr->shaxis].votes=1;
+                            ellipses[ellptr->shaxis].followed_points.push_back(la1);
+                            ellipses[ellptr->shaxis].followed_points.push_back(la2);
+                            ellipses[ellptr->shaxis].followed_points.push_back(another);
+                        }
                     }
                     
                 }

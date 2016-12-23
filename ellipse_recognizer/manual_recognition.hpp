@@ -23,8 +23,14 @@ namespace qLibrary{
         class qEllipse{
             public:
                 qPoint2 la1,la2,center;
+                // la1: one end of long axis
+                // la2: another end of long axis
+                // center: self-explained
                 int lhaxis,shaxis;
+                // lhaxis: half of the length of long axis
+                // shaxis: half of the length of short axis
                 double rotateAngle;
+                // rotateAngle: self-explained
                 qEllipse();
                 qEllipse(qPoint2 la1,qPoint2 la2); // WARNING: this method will make the ellipse a unsatisfied one
                 qEllipse(qPoint2 la1,qPoint2 la2,qPoint2 another);
@@ -33,6 +39,13 @@ namespace qLibrary{
         class qEllipseComparator{
             public:
                 bool operator()(const qEllipse &a,const qEllipse &b);
+        };
+        class qEllipseStorager{
+            public:
+                qEllipse* ellipse;
+                int vote;
+                std::vector<qPoint2> followed_points;
+                qEllipseStorager();
         };
         std::vector<qEllipse> recognize_ellipse(cimg_library::CImg<unsigned char> &coroutine);
     }
