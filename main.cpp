@@ -10,7 +10,7 @@ uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
 int eps=20;
 float face_size=0;
 float background_size=0;
-
+float blur_number=2.5;
 using namespace std;
 using namespace cimg_library;
 void displayHelpInfo(){cout << "help"<<endl;}
@@ -185,6 +185,13 @@ void readConfig()
             background_size = checkedResult.second;
             continue;
         }
+        checkedResult = readCfgValueF(cfgValBuf, "blur_number");
+        if(checkedResult.first)
+        {
+            background_size = checkedResult.second;
+            continue;
+        }
+
     }
     return;
 }
