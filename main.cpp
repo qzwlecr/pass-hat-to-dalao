@@ -16,7 +16,7 @@ uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
 int eps=20;
 float face_size=0;
 float background_size=0;
-float blur_number = 0;
+float blur_number = 0.5;
 
 
 void displayHelpInfo(){cout << "help"<<endl;}
