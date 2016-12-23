@@ -6,7 +6,8 @@
 
 namespace qLibrary{
     namespace Graphics{
-        
+        const int MIN_ELLIPSE_LAXIS = 30;
+        const int MIN_ELLIPSE_SAXIS = 20;
         class qPoint2{
             public:
                 int x;
@@ -15,6 +16,9 @@ namespace qLibrary{
                 qPoint2(int x,int y);
                 void tosp(qPoint2 screen);
                 void tocp(qPoint2 screen);
+                double operator-(const qPoint2 &a);
+                bool operator==(const qPoint2 &a);
+                qPoint2 operator%(const qPoint2 &a);
         };
         class qEllipse{
             public:
@@ -26,7 +30,10 @@ namespace qLibrary{
                 qEllipse(qPoint2 la1,qPoint2 la2,qPoint2 another);
                 void append(qPoint2 another);
         };
-        
+        class qEllipseComparator{
+            public:
+                bool operator()(const qEllipse &a,const qEllipse &b);
+        };
         std::vector<qEllipse> recognize_ellipse(cimg_library::CImg<unsigned char> &coroutine);
     }
 }

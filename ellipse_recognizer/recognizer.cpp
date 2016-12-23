@@ -20,8 +20,6 @@ namespace qLibrary{
             cv::findContours(bin_img,ellipses,CV_RETR_LIST,CV_CHAIN_APPROX_NONE);
             for (auto &each : ellipses){
                 unsigned int counts= each.size();// how much points contains.
-                if(counts>=MAX_PCTG or counts <= MIN_PCTG)
-                    continue;
                 cv::Mat alike_ellipses;
                 cv::Mat(each).convertTo(alike_ellipses,CV_32F);
                 cv::RotatedRect recresult=cv::fitEllipse(alike_ellipses);
