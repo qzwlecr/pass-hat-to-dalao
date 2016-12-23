@@ -16,6 +16,7 @@ uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
 int eps=20;
 float face_size=0;
 float background_size=0;
+float blur_number = 0;
 
 
 void displayHelpInfo(){cout << "help"<<endl;}
@@ -185,6 +186,12 @@ void readConfig()
         if(checkedResult.first)
         {
             background_size = checkedResult.second;
+            continue;
+        }
+        checkedResult = readCfgValueF(cfgValBuf, "blur_number");
+        if(checkedResult.first)
+        {
+            blur_number = checkedResult.second;
             continue;
         }
     }
