@@ -26,7 +26,7 @@ using std::cout;
 bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 {
     cout << "***********************RECOLIC_DEBUG**************************" << endl;
-    auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(colorOptimizedImage.get_MAT());
+    auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(manDrawOutline.get_MAT());
     //DEBUG INFO
     cout << "BUFFER SIZE:" << recognizedBuf.size() << endl;
 

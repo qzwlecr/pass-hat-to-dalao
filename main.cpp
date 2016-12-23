@@ -16,15 +16,10 @@ uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT = 100; //default
 int eps=20;
 float face_size=0;
 float background_size=0;
-<<<<<<< HEAD
 float blur_number=2.5;
 using namespace std;
 using namespace cimg_library;
-=======
-float blur_number = 0;
 
-
->>>>>>> 963dcf0df605308ea3e7ced334a1e2f1bd4dd539
 void displayHelpInfo(){cout << "help"<<endl;}
 void readConfig();
 
