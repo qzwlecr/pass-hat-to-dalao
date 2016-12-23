@@ -55,7 +55,7 @@ std::vector<std::vector<bool> > doColorOptimize()
                 }
             }
             r_aver/=change_queue.size(),g_aver/=change_queue.size(),b_aver/=change_queue.size();
-            if(change_queue.size()<face_size*size_x*size_y)
+            if(change_queue.size()>face_size*size_x*size_y)
             {
                 for(std::vector<readyToChange>::iterator iter=change_queue.begin();iter!=change_queue.end();++iter)
                 {
