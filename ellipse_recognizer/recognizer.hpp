@@ -61,6 +61,7 @@ bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and ou
     for(RotatedRect &currentCheckRect : recognizedBuf)
     {
         uint16_t currentScore = scoreRotatedRect(currentCheckRect, originHeight);
+        cout << "? >" << currentScore << " got, height=" << currentCheckRect.boundingRect().height << endl;
         if(currentScore && currentScore > maxScore)
         {
             maxScore = currentScore;
@@ -93,7 +94,7 @@ bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and ou
             dxMin = curr.x;
             xMin = cter;
         }
-        if(curr.x < dxMax)
+        if(curr.x > dxMax)
         {
             dxMax = curr.x;
             xMax = cter;
@@ -111,10 +112,20 @@ bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and ou
     }
     float k1 = getk(tmpBuf[xMax], tmpBuf[xMin]),
         k2 = getk(tmpBuf[spareA], tmpBuf[spareB]);
+    if(std::isnan(k1))
+    {
+        k1 = (k2>0?0-100:100);
+    }
+    else if(std::isnan(k2))
+    {
+        k2 = (k1>0?0-100:100);
+    }
     float k1_origin = k1, k2_origin = k2;
     k1 = (k1>0?k1:0-k1);
     k2 = (k2>0?k2:0-k2);
+    cout << "CALC > absk1=" << k1 << ", absk2=" << k2 << endl;
     float kForAngle = 0;
+    cout << "CALC > spareA=" << spareA << "spareB=" << spareB << "xMin=" << xMin << "xMax=" << xMax << endl;
     if(k1<k2)
     {
         kForAngle = k1_origin;
@@ -136,8 +147,18 @@ bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and ou
         else
             left = tmpBuf[spareB], right = tmpBuf[spareA];
     }
+    cout << "CALC >head";
+    printPoint(head);
+    cout << "bottom";
+    printPoint(bottom);
+    cout << "left";
+    printPoint(left);
+    cout << "right";
+    printPoint(right);
+    cout << endl;
     //Coordinate convertion start...
     float offsetAngle = atan(kForAngle); //rad
+    cout << "CALC > offsetAngle=" << offsetAngle << endl;
     float cosAngle = cos(offsetAngle),
         sinAngle = sin(offsetAngle),
         tanAngle = tan(offsetAngle);
