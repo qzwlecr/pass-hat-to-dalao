@@ -102,6 +102,7 @@ namespace qLibrary{
                         if((la1%la2)-another<MIN_ELLIPSE_SAXIS)
                             continue;
                     }
+                    
                 }
             }
 
