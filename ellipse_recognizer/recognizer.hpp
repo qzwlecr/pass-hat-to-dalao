@@ -240,7 +240,7 @@ bool RotatedRectToHatPosition(analyseResultStruct &analyseResult, const RotatedR
     float cosAngle = cos(offsetAngle),
         sinAngle = sin(offsetAngle),
         tanAngle = tan(offsetAngle);
-    Point2f &offsetPoint = pBestResult->center;
+    const Point2f &offsetPoint = pBestResult->center;
     float varA = sqrt((left.x-right.x)*(left.x-right.x) + (left.y-right.y)*(left.y-right.y)) / 2,
         varB = sqrt((head.x-bottom.x)*(head.x-bottom.x) + (head.y-bottom.y)*(head.y-bottom.y)) / 2;
     Point2f lineStart(0-0.8660254038*varA, varB / 2), lineEnd(0.8660254038*varA, varB / 2);
