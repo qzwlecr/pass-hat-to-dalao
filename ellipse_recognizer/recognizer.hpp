@@ -10,7 +10,7 @@
 #include <opencv2/core.hpp>
 #include "../stdafx.hpp"
 
-#define MIN_SCORE_TO_USE_OPENCV_RESULT 100
+#define MIN_SCORE_TO_USE_OPENCV_RESULT var_MIN_SCORE_TO_USE_OPENCV_RESULT
 
 namespace qLibrary{
     namespace Graphics{

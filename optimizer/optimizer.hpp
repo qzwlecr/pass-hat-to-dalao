@@ -8,9 +8,9 @@
 using namespace cimg_library;
 typedef unsigned char uchar;
 
-const int eps=20;
-const float face_size=0;
-const float background_size=0;
+extern int eps;
+extern float face_size;
+extern float background_size;
 const int dx[]={0,0,1,1,1,-1,-1,-1};
 const int dy[]={1,-1,0,1,-1,0,1,-1};
 
