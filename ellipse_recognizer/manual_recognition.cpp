@@ -1,6 +1,7 @@
 #include "manual_recognition.hpp"
 #include "math.h"
 #include <set>
+#include <iostream>
 #include <vector>
 #include <array>
 
@@ -50,9 +51,11 @@ namespace qLibrary{
             // or may get some fucking ERRORs.
             double d2=sq(another.x-center.x)+sq(another.y-center.y);
             double f2=sq(another.x-la2.x)+sq(another.y-la2.y);
-            double cos2d=sq(((double)(sq(lhaxis)+d2-f2))/(2*(double)lhaxis*sqrt(d2)));
-            double sin2d=1-cos2d;
+            double cos2d=sq((((double)sq(lhaxis))+d2-f2)/(2*(double)lhaxis*sqrt(d2)));
+            double sin2d=(double)1-cos2d;
             shaxis=sqrt((sq(lhaxis)*d2*sin2d)/(sq(lhaxis)-d2*cos2d));
+            // FORCE_MIX
+            shaxis=shaxis-((int)shaxis%2);
         }
         qEllipse::qEllipse(qPoint2 la1,qPoint2 la2,qPoint2 another){
             this->la1=la1;
@@ -71,7 +74,6 @@ namespace qLibrary{
             vote=0;
         }
         qEllipseStorager::~qEllipseStorager(){
-            delete ellipse;
         }
         std::vector<qEllipse> recognize_ellipse(cimg_library::CImg<unsigned char> &coroutine){
             int cross=(int)sqrt(sq(coroutine.width())+sq(coroutine.height()))+1;
@@ -95,7 +97,6 @@ namespace qLibrary{
                     }
                 }
             }
-
             for(auto &la1 : coroutinePoints){
                 if(!checkArr[la1.x][la1.y])
                     continue;
@@ -108,6 +109,7 @@ namespace qLibrary{
                         continue;
                     // all param check completed,start ellipse generation
                     for(auto &another : coroutinePoints){
+                        std::cout << "NOW> " <<la1.x << " "<<la1.y<<"|"<<la2.x<<" "<<la2.y<<"|"<<another.x<<" "<<another.y<<std::endl;
                         if((another==la1) or (another==la2))
                             continue;
                         if(!checkArr[another.x][another.y])
@@ -117,6 +119,10 @@ namespace qLibrary{
                         // 3 points get,start voting
                         qEllipse *ellptr=new qEllipse(la1,la2);
                         ellptr->append(another);
+                        if(ellptr->shaxis>1024 or ellptr->shaxis<=MIN_ELLIPSE_SAXIS){
+                            delete ellptr;
+                            continue;
+                        }
                         if(ellipses[ellptr->shaxis].ellipse!=NULL){
                             // already have
                             ellipses[ellptr->shaxis].vote+=1;
@@ -132,22 +138,30 @@ namespace qLibrary{
                     }
                     // all another points checked.
                     // now start checking votes.
+                    int maxvotes=0,maxindex=0;
                     for(int iter=0;iter<ellipses.size();iter++){
                         if(ellipses[iter].ellipse==NULL)
                             continue;
-                        if(ellipses[iter].vote>MIN_VOTES){
-                            qEllipse tmpell=*(ellipses[iter].ellipse);
-                            output.push_back(tmpell);
-                            for( auto pts : ellipses[iter].followed_points ){
-                                checkArr[pts.x][pts.y]=false;
-                            }
+                        if(ellipses[iter].vote>maxvotes){
+                            maxvotes=ellipses[iter].vote;
+                            maxindex=iter;
                         }
-                        // clear
-                        delete ellipses[iter].ellipse;
-                        ellipses[iter].ellipse=NULL;
-                        ellipses[iter].vote=0;
                     }
-
+                    if(maxvotes>=MIN_VOTES){
+                        qEllipse tmpell=*(ellipses[maxindex].ellipse);
+                        output.push_back(tmpell);
+                        for( auto x:ellipses[maxindex].followed_points){
+                            checkArr[x.x][x.y]=false;
+                        }
+                    }
+                    for(auto &x : ellipses){
+                        if(x.ellipse==NULL)
+                            continue;
+                        delete x.ellipse;
+                        x.ellipse=NULL;
+                        x.vote=0;
+                        x.followed_points.clear();
+                    }
                 }
             }
             return output;

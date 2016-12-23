@@ -3,12 +3,13 @@
 
 #include "../stdafx.hpp"
 #include <vector>
+#include <list>
 
 namespace qLibrary{
     namespace Graphics{
         const int MIN_ELLIPSE_LAXIS = 30;
         const int MIN_ELLIPSE_SAXIS = 20;
-        const int MIN_VOTES = 30;
+        const int MIN_VOTES = 20;
         class qPoint2{
             public:
                 int x;
@@ -45,7 +46,7 @@ namespace qLibrary{
             public:
                 qEllipse* ellipse;
                 int vote;
-                std::vector<qPoint2> followed_points;
+                std::list<qPoint2> followed_points;
                 qEllipseStorager();
                 ~qEllipseStorager();
         };

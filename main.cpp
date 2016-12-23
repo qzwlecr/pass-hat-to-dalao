@@ -97,7 +97,7 @@ int main(int argv_size, const char **args)
             x.la1.tosp(screen_embody);
             x.la2.tosp(screen_embody);
             x.center.tosp(screen_embody);
-            cout << "ELLIPSE>> LA1: " << x.la1.x <<","<<x.la1.y<<" LA2:" <<x.la2.x<<","<<x.la2.y<<endl;
+            cout << "ELLIPSE>> LA1: " << x.la1.x <<","<<x.la1.y<<" LA2:" <<x.la2.x<<","<<x.la2.y<<" SAXIS:"<<x.shaxis<<endl;
         }
 
         return 0;
