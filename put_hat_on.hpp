@@ -10,6 +10,10 @@
 #include <cmath>
 #include <vector>
 #include <string>
+#include <cstdlib>
+
+#define ENABLE_GREEN var_ENABLE_GREEN
+#define GREEN_RANDOM_RATE var_GREEN_RANDOM_RATE
 using namespace std;
 using namespace cimg_library;
 using cv::Point2f;
@@ -39,7 +43,12 @@ void img_draw_alphaIgn(int srcX,int srcY,cimg_library::CImg<unsigned char> &orig
             origimg(srcX+iterx,srcY+itery,0,2)=color_alpha_mix(origimg(srcX+iterx,srcY+itery,0,2),hat(iterx,itery,0,2),hat(iterx,itery,0,3));
         }
     }
-    
+
+}
+
+void engreen_cimg(CImg<unsigned char> &)
+{
+
 }
 
 void putHatOn()
@@ -78,6 +87,15 @@ void putHatOn()
     for(size_t cter = 0; cter < 5; ++cter)
         cout << resBuf[cter] << ' ';
     cout << endl;
+    //////////////////////////Add green
+    if(ENABLE_GREEN)
+    {
+        srand(time(0));
+        float currentRand = rand() / RAND_MAX;
+        if(currentRand < GREEN_RANDOM_RATE)
+            engreen_cimg(srcHat);
+    }
+    ////////
     //methods...
     auto getLength = [](const Point2f &pa, const Point2f &pb) -> float {return sqrt((pb.y-pa.y)*(pb.y-pa.y) + (pb.x-pa.x)*(pb.x-pa.x));};
     auto getk = [](const Point2f &pa, const Point2f &pb) -> float {return (pa.y - pb.y)/(pa.x - pb.x);};

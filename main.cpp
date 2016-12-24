@@ -19,6 +19,8 @@ int eps=20;
 float face_size=0;
 float background_size=0;
 float blur_number=2.5;
+bool var_ENABLE_GREEN = false;
+float var_GREEN_RANDOM_RATE = 0.1;
 
 void displayHelpInfo(){cout << "help"<<endl;}
 void readConfig();
@@ -34,6 +36,12 @@ int main(int argv_size, const char **args)
     }
     try{
         originImage = CImg<unsigned char>(args[1]);
+        originImage.display();
+        if(originImage.width() > 200)
+        {
+            double rate = static_cast<double>(originImage.height()) / originImage.width();
+            originImage.resize(200, 200 * rate);
+        }
     }
     catch(CImgIOException &e)
     {
@@ -202,6 +210,18 @@ void readConfig()
         if(checkedResult.first)
         {
             blur_number = checkedResult.second;
+            continue;
+        }
+        checkedResult = readCfgValueU16(cfgValBuf, "ENABLE_GREEN");
+        if(checkedResult.first)
+        {
+            var_ENABLE_GREEN = (checkedResult.second > 0);
+            continue;
+        }
+        checkedResult = readCfgValueF(cfgValBuf, "GREEN_RANDOM_RATE");
+        if(checkedResult.first)
+        {
+            var_GREEN_RANDOM_RATE = checkedResult.second;
             continue;
         }
         if(strLeftEqual(cfgValBuf, "lefthat="))
