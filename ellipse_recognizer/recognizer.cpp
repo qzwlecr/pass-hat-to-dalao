@@ -29,11 +29,11 @@ namespace qLibrary{
                 cv::RotatedRect recresult=cv::fitEllipse(alike_ellipses);
                 if(!checkDouble(recresult.size.width,0.0)){
                     outvec.push_back(recresult);
-                    cv::ellipse(circle_img,recresult,cv::Scalar(0,0,255),2,CV_AA);
+            //        cv::ellipse(circle_img,recresult,cv::Scalar(0,0,255),2,CV_AA);
                 }
             }
-            cimg_library::CImg<unsigned char> recolic233(circle_img);
-            recolic233.display();
+            //cimg_library::CImg<unsigned char> recolic233(circle_img);
+            //recolic233.display();
             return outvec;
         }
 

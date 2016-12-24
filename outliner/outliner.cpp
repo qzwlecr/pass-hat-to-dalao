@@ -35,7 +35,7 @@ namespace qLibrary{
         }
         void checkOutline(cimg_library::CImg<unsigned char> &cimg,cimg_library::CImg<unsigned char> &outimg,std::vector<std::vector<bool> > chkArr){
             int origwidth=cimg.width(),origlength=cimg.height();
-			std::cout << "width " << origwidth << " length " << origlength << std::endl;
+			//std::cout << "width " << origwidth << " length " << origlength << std::endl;
             for(int iterx=0;iterx<origwidth;iterx++){
                 for(int itery=0;itery<origlength;itery++){
                     checkOutlineAt(cimg,outimg,iterx,itery,chkArr[iterx][itery]);

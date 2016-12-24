@@ -36,7 +36,7 @@ int main(int argv_size, const char **args)
     }
     try{
         originImage = CImg<unsigned char>(args[1]);
-        originImage.display();
+    //    originImage.display();
         if(originImage.width() > 200)
         {
             double rate = static_cast<double>(originImage.height()) / originImage.width();
@@ -45,7 +45,7 @@ int main(int argv_size, const char **args)
     }
     catch(CImgIOException &e)
     {
-        cout << "On opening the image:" << e.what() << endl;
+    //    cout << "On opening the image:" << e.what() << endl;
         return 0;
     }
     //Additional arguments
@@ -81,9 +81,9 @@ int main(int argv_size, const char **args)
     colorOptimizedImage = manDrawOutline = resultImage = black_init;
 //    try
 //    {
-		originImage.display();
+	//	originImage.display();
         chkarr=doColorOptimize();
-        cout << "DEBUG-TERMINAGE:"<< endl;
+    //    cout << "DEBUG-TERMINAGE:"<< endl;
 		CImg<unsigned char> boolArrayDisp(originImage.width(),originImage.height(),1,3,0);
 		for(int iterx=0;iterx<originImage.width();iterx++){
 			for(int itery=0;itery<originImage.height();itery++){
@@ -94,10 +94,10 @@ int main(int argv_size, const char **args)
 				}
 			}
 		}
-        colorOptimizedImage.display();
-		boolArrayDisp.display();
+    //    colorOptimizedImage.display();
+	//	boolArrayDisp.display();
 		doOutlineDraw(chkarr);
-		manDrawOutline.display();
+	//	manDrawOutline.display();
 
 
         if(!doOpencvAnalyse())
@@ -109,8 +109,8 @@ int main(int argv_size, const char **args)
                 return 0;
             }
         }
-        cout << "Result:beginx=" << analyseResult.bottomLine.lineBegin.x << "beginy=" << analyseResult.bottomLine.lineBegin.y << endl;
-        cout << "Result:endx=" << analyseResult.bottomLine.lineEnd.x << "endy=" << analyseResult.bottomLine.lineEnd.y << endl;
+    //    cout << "Result:beginx=" << analyseResult.bottomLine.lineBegin.x << "beginy=" << analyseResult.bottomLine.lineBegin.y << endl;
+    //    cout << "Result:endx=" << analyseResult.bottomLine.lineEnd.x << "endy=" << analyseResult.bottomLine.lineEnd.y << endl;
         putHatOn();
 //    }
     originImage.display();

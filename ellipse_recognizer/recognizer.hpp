@@ -25,20 +25,20 @@ using std::cout;
 
 bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and output to analyseResult, else, return false and do nothing to resultImage.
 {
-    cout << "***********************RECOLIC_DEBUG**************************" << endl;
+    //cout << "***********************RECOLIC_DEBUG**************************" << endl;
     auto recognizedBuf = qLibrary::Graphics::doOpencvRecognizer(manDrawOutline.get_MAT());
     //DEBUG INFO
-    cout << "BUFFER SIZE:" << recognizedBuf.size() << endl;
+    //cout << "BUFFER SIZE:" << recognizedBuf.size() << endl;
 
     auto printPoint = [](const Point2f &toPrint) {cout << '(' << toPrint.x << ',' << toPrint.y << ')'; };
     for(const RotatedRect &cur : recognizedBuf)
     {
         Point2f buf[4];
         cur.points(buf);
-        cout << "RECOLIC_DEBUG > Center=" << (printPoint(cur.center), " Height=") << cur.boundingRect().height << " Width=" << cur.boundingRect().width << "4Point:";
-        for(size_t cter = 0; cter < 4; ++cter)
-            printPoint(buf[cter]);
-        cout << "|" << endl;
+        //cout << "RECOLIC_DEBUG > Center=" << (printPoint(cur.center), " Height=") << cur.boundingRect().height << " Width=" << cur.boundingRect().width << "4Point:";
+        //for(size_t cter = 0; cter < 4; ++cter)
+        //    printPoint(buf[cter]);
+        //cout << "|" << endl;
     }
     //DEBUG INFO
     auto scoreRotatedRect = [](const RotatedRect &toJudge, int originHeight) -> uint16_t {
@@ -61,7 +61,7 @@ bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and ou
     for(RotatedRect &currentCheckRect : recognizedBuf)
     {
         uint16_t currentScore = scoreRotatedRect(currentCheckRect, originHeight);
-        cout << "? >" << currentScore << " got, height=" << currentCheckRect.boundingRect().height << endl;
+        //cout << "? >" << currentScore << " got, height=" << currentCheckRect.boundingRect().height << endl;
         if(currentScore && currentScore > maxScore)
         {
             maxScore = currentScore;
@@ -123,9 +123,9 @@ bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and ou
     float k1_origin = k1, k2_origin = k2;
     k1 = (k1>0?k1:0-k1);
     k2 = (k2>0?k2:0-k2);
-    cout << "CALC > absk1=" << k1 << ", absk2=" << k2 << endl;
+    //cout << "CALC > absk1=" << k1 << ", absk2=" << k2 << endl;
     float kForAngle = 0;
-    cout << "CALC > spareA=" << spareA << "spareB=" << spareB << "xMin=" << xMin << "xMax=" << xMax << endl;
+    //cout << "CALC > spareA=" << spareA << "spareB=" << spareB << "xMin=" << xMin << "xMax=" << xMax << endl;
     if(k1<k2)
     {
         kForAngle = k1_origin;
@@ -147,18 +147,18 @@ bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and ou
         else
             left = tmpBuf[spareB], right = tmpBuf[spareA];
     }
-    cout << "CALC >head";
-    printPoint(head);
-    cout << "bottom";
-    printPoint(bottom);
-    cout << "left";
-    printPoint(left);
-    cout << "right";
-    printPoint(right);
-    cout << endl;
+    //cout << "CALC >head";
+    //printPoint(head);
+    //cout << "bottom";
+    //printPoint(bottom);
+    //cout << "left";
+    //printPoint(left);
+    //cout << "right";
+    //printPoint(right);
+    //cout << endl;
     //Coordinate convertion start...
     float offsetAngle = atan(kForAngle); //rad
-    cout << "CALC > offsetAngle=" << offsetAngle << endl;
+    //cout << "CALC > offsetAngle=" << offsetAngle << endl;
     offsetAngle = (offsetAngle > 0? offsetAngle : 0-offsetAngle);
     float cosAngle = cos(offsetAngle),
         sinAngle = sin(offsetAngle),
