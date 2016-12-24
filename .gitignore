@@ -42,6 +42,7 @@
 *.jpeg
 *.tif
 *.bmp
+output.png
 
 #other
 main
