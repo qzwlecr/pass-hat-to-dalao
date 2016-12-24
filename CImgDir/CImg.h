@@ -42636,9 +42636,9 @@ cv::Mat get_MAT(const unsigned int z=0) const {
         T *ptrd = data(x0<0?0:x0,y0<0?0:y0,z0<0?0:z0,c0<0?0:c0);
         for (int v = 0; v<lC; ++v) {
           for (int z = 0; z<lZ; ++z) {
-            /*if (opacity>=1)
+            if (opacity>=1)
               for (int y = 0; y<lY; ++y) { std::memcpy(ptrd,ptrs,slX); ptrd+=_width; ptrs+=sprite._width; }
-            else*/ for (int y = 0; y<lY; ++y) {
+            else for (int y = 0; y<lY; ++y) {
                 for (int x = 0; x<lX; ++x) { *ptrd = (T)(nopacity*(*(ptrs++)) + *ptrd*copacity); ++ptrd; }
                 ptrd+=offX; ptrs+=soffX;
               }
