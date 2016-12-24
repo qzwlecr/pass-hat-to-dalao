@@ -10,6 +10,10 @@
 #include <cmath>
 #include <vector>
 #include <string>
+#include <cstdlib>
+
+#define ENABLE_GREEN var_ENABLE_GREEN
+#define GREEN_RANDOM_RATE var_GREEN_RANDOM_RATE
 using namespace std;
 using namespace cimg_library;
 using cv::Point2f;
@@ -39,7 +43,12 @@ void img_draw_alphaIgn(int srcX,int srcY,cimg_library::CImg<unsigned char> &orig
             origimg(srcX+iterx,srcY+itery,0,2)=color_alpha_mix(origimg(srcX+iterx,srcY+itery,0,2),hat(iterx,itery,0,2),hat(iterx,itery,0,3));
         }
     }
-    
+
+}
+
+void engreen_cimg(CImg<unsigned char> &)
+{
+
 }
 
 void putHatOn()
@@ -74,28 +83,49 @@ void putHatOn()
     Point2f srcBeginPoint(stof(resBuf[0]), stof(resBuf[1]));
     Point2f srcEndPoint(stof(resBuf[2]), stof(resBuf[3]));
     CImg<unsigned char> srcHat(resBuf[4].c_str());
+    cout << "RECOLIC_DEBUG > ";
+    for(size_t cter = 0; cter < 5; ++cter)
+        cout << resBuf[cter] << ' ';
+    cout << endl;
+    //////////////////////////Add green
+    if(ENABLE_GREEN)
+    {
+        srand(time(0));
+        float currentRand = rand() / RAND_MAX;
+        if(currentRand < GREEN_RANDOM_RATE)
+            engreen_cimg(srcHat);
+    }
+    ////////
     //methods...
     auto getLength = [](const Point2f &pa, const Point2f &pb) -> float {return sqrt((pb.y-pa.y)*(pb.y-pa.y) + (pb.x-pa.x)*(pb.x-pa.x));};
     auto getk = [](const Point2f &pa, const Point2f &pb) -> float {return (pa.y - pb.y)/(pa.x - pb.x);};
     auto getMiddlePoint = [](const Point2f &pa, const Point2f &pb) -> Point2f {return Point2f((pa.x+pb.x)/2, (pa.y+pb.y)/2);};
     auto printPoint = [](const Point2f &toPrint) {cout << '(' << toPrint.x << ',' << toPrint.y << ')'; };
     float rateToMulti = getLength(analyseResult.bottomLine.lineBegin, analyseResult.bottomLine.lineEnd) / getLength(srcBeginPoint, srcEndPoint);
+    cout << "RECOLIC_DEBUG > rate=" << rateToMulti << "srcHat.width=" << srcHat.width() << ",height=" << srcHat.height() << endl;
+    srcHat.display();
     srcHat.resize(srcHat.width()*rateToMulti, srcHat.height()*rateToMulti);
     srcBeginPoint.x *= rateToMulti;srcBeginPoint.y *= rateToMulti;srcEndPoint.x *= rateToMulti;srcEndPoint.y *= rateToMulti;
     float ksrc = getk(srcBeginPoint, srcEndPoint);
+    cout << "RECOLIC_DEBUG > ksrc=" << ksrc << " k=" << k << endl;
     float angleSrc = atan(ksrc);
     float angleDst = atan(k);
-    float originHeight = srcHat.height();
+    float originHeight = srcHat.height(), originWidth = srcHat.width();
     float offsetAngle = (angleDst - angleSrc);
+    cout << "RECOLIC_DEBUG > offsetAngle=" << offsetAngle << endl;
     srcHat.display();
     srcHat.rotate(offsetAngle*57.29578);
     if(srcBeginPoint.x > srcEndPoint.x)
         swap(srcBeginPoint, srcEndPoint);
     float sinAngle = sin(offsetAngle), cosAngle = cos(offsetAngle);
-    Point2f newSrcBeginPoint(originHeight*sinAngle + srcBeginPoint.x*cosAngle - srcBeginPoint.y*sinAngle, srcBeginPoint.x*sinAngle + srcBeginPoint.y*cosAngle);
+    Point2f newSrcBeginPoint = offsetAngle > 0 ? Point2f(originHeight*sinAngle + srcBeginPoint.x*cosAngle - srcBeginPoint.y*sinAngle, srcBeginPoint.x*sinAngle + srcBeginPoint.y*cosAngle) : Point2f(srcBeginPoint.x*cosAngle - srcBeginPoint.y*sinAngle, srcBeginPoint.x*sinAngle - originWidth*sinAngle + srcBeginPoint.y*cosAngle);
+    cout << "RECOLIC_DEBUG > new point:";
+    printPoint(newSrcBeginPoint);
+    cout << "old src is ";
+    printPoint(srcBeginPoint); cout << endl;
     Point2f offsetPointArrow(analyseResult.bottomLine.lineBegin.x - newSrcBeginPoint.x, analyseResult.bottomLine.lineBegin.y - newSrcBeginPoint.y);
     srcHat.display();
-
+    cout << "RECOLIC_DEBUG > Drawing at " << offsetPointArrow.x << ',' << offsetPointArrow.y << endl;
     std::cout << offsetPointArrow.x << " " << offsetPointArrow.y << std::endl;
     //originImage.draw_image(offsetPointArrow.x, offsetPointArrow.y,0,0, srcHat, 1.0);
     img_draw_alphaIgn(offsetPointArrow.x,offsetPointArrow.y,originImage,srcHat);

@@ -14,6 +14,7 @@ namespace qLibrary{
             if(origimg.empty())
                 return outvec;
             cv::Mat copy_img;
+            cv::Mat circle_img=origimg;
             //cv::Mat grayimg,bin_img;
             cv::cvtColor(origimg,copy_img,CV_BGR2GRAY);
             std::vector<std::vector<cv::Point> > ellipses;
@@ -28,10 +29,10 @@ namespace qLibrary{
                 cv::RotatedRect recresult=cv::fitEllipse(alike_ellipses);
                 if(!checkDouble(recresult.size.width,0.0)){
                     outvec.push_back(recresult);
-                    cv::ellipse(copy_img,recresult,cv::Scalar(0,0,255),2,CV_AA);
+                    cv::ellipse(circle_img,recresult,cv::Scalar(0,0,255),2,CV_AA);
                 }
             }
-            cimg_library::CImg<unsigned char> recolic233(copy_img);
+            cimg_library::CImg<unsigned char> recolic233(circle_img);
             recolic233.display();
             return outvec;
         }
