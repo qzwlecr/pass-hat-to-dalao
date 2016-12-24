@@ -159,6 +159,7 @@ bool doOpencvAnalyse()//Read colorOptimizedImage, if success, return true and ou
     //Coordinate convertion start...
     float offsetAngle = atan(kForAngle); //rad
     cout << "CALC > offsetAngle=" << offsetAngle << endl;
+    offsetAngle = (offsetAngle > 0? offsetAngle : 0-offsetAngle);
     float cosAngle = cos(offsetAngle),
         sinAngle = sin(offsetAngle),
         tanAngle = tan(offsetAngle);
