@@ -155,7 +155,6 @@ void readConfig()
         return make_pair(false, 0);
     };
     auto readCfgValueF = [](const string &buf, const string &recordName) -> pair<bool, float> {
-        cout << "convert >" << buf << "recordNam e=" << recordName << endl;
         if(buf.size() < recordName.size() + 2)
             return make_pair(false, 0);
         if(buf.substr(0, recordName.size()) == recordName)

@@ -103,7 +103,6 @@ void putHatOn()
     {
         srand(time(0));
         double currentRand = (double)(rand()%1000)/1000;
-        cout << "----- >RAND = " << currentRand << ", rand_rate=" << var_GREEN_RANDOM_RATE << endl;
         if(currentRand < var_GREEN_RANDOM_RATE)
             engreen_cimg(srcHat);
     }
