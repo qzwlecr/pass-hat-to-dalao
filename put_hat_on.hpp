@@ -12,8 +12,8 @@
 #include <string>
 #include <cstdlib>
 
-#define ENABLE_GREEN var_ENABLE_GREEN
-#define GREEN_RANDOM_RATE var_GREEN_RANDOM_RATE
+extern bool var_ENABLE_GREEN;
+extern float var_GREEN_RANDOM_RATE;
 using namespace std;
 using namespace cimg_library;
 using cv::Point2f;
@@ -99,11 +99,12 @@ void putHatOn()
         cout << resBuf[cter] << ' ';
     cout << endl;
     //////////////////////////Add green
-    if(ENABLE_GREEN)
+    if(var_ENABLE_GREEN)
     {
         srand(time(0));
-        float currentRand = rand() / RAND_MAX;
-        if(currentRand < GREEN_RANDOM_RATE)
+        double currentRand = (double)(rand()%1000)/1000;
+        cout << "----- >RAND = " << currentRand << ", rand_rate=" << var_GREEN_RANDOM_RATE << endl;
+        if(currentRand < var_GREEN_RANDOM_RATE)
             engreen_cimg(srcHat);
     }
     ////////

@@ -13,8 +13,6 @@ using std::array;
 #include <vector>
 #include <cstdint>
 extern uint16_t var_MIN_SCORE_TO_USE_OPENCV_RESULT;
-extern bool var_ENABLE_GREEN;
-extern float var_GREEN_RANDOM_RATE;
 //Global Variables
 //These references are guaranteed to be valid while calling your modules.
 struct analyseResultStruct;

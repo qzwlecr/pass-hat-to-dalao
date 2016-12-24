@@ -155,12 +155,13 @@ void readConfig()
         return make_pair(false, 0);
     };
     auto readCfgValueF = [](const string &buf, const string &recordName) -> pair<bool, float> {
+        cout << "convert >" << buf << "recordNam e=" << recordName << endl;
         if(buf.size() < recordName.size() + 2)
             return make_pair(false, 0);
         if(buf.substr(0, recordName.size()) == recordName)
         {
             if(buf[recordName.size()] == '=')
-                return make_pair(true, stof(buf.substr(recordName.size() + 1)));
+                return make_pair(true, stof(buf.substr(recordName.size() + 1, string::npos)));
         }
         return make_pair(false, 0);
     };
@@ -218,10 +219,10 @@ void readConfig()
             var_ENABLE_GREEN = (checkedResult.second > 0);
             continue;
         }
-        checkedResult = readCfgValueF(cfgValBuf, "GREEN_RANDOM_RATE");
+        checkedResult = readCfgValueU16(cfgValBuf, "GREEN_RANDOM_RATE");
         if(checkedResult.first)
         {
-            var_GREEN_RANDOM_RATE = checkedResult.second;
+            var_GREEN_RANDOM_RATE = (float)checkedResult.second / 100;
             continue;
         }
         if(strLeftEqual(cfgValBuf, "lefthat="))
