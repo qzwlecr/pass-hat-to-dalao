@@ -46,9 +46,20 @@ void img_draw_alphaIgn(int srcX,int srcY,cimg_library::CImg<unsigned char> &orig
 
 }
 
-void engreen_cimg(CImg<unsigned char> &)
-{
+void qSwap(unsigned char &a,unsigned char &b){
+    unsigned char buf;
+    buf=a;
+    a=b;
+    b=buf;
+}
 
+void engreen_cimg(CImg<unsigned char> &origimg)
+{
+    for(int iterx=0;iterx<origimg.width();iterx++){
+        for(int itery=0;itery<origimg.height();itery++){
+            swap(origimg(iterx,itery,0,0),origimg(iterx,itery,0,1));
+        }
+    }
 }
 
 void putHatOn()
