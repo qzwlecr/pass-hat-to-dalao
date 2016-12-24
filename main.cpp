@@ -1,4 +1,4 @@
-#include "stdafx.hpp"
+
 #include "put_hat_on.hpp"
 #include <iostream>
 #include <string>
@@ -217,3 +217,6 @@ void readConfig()
     }
     return;
 }
+///////////////////////////////
+
+

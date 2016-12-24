@@ -1,7 +1,8 @@
-#ifndef PUT_HAT_ON_HPP_INCLUDED
-#define PUT_HAT_ON_HPP_INCLUDED
+#ifndef RECOLIC_PUT_HAT
+#define RECOLIC_PUT_HAT
 
 #include "stdafx.hpp"
+
 #include <opencv2/core.hpp>
 #include <random>
 #include <iostream>
@@ -14,6 +15,8 @@ using namespace cimg_library;
 using cv::Point2f;
 extern pair<vector<string>, vector<string>> hatImageInfos;
 std::vector<std::string> DivideString(const std::string &tod, const char divider);
+//extern CImg<unsigned int> recolic_read_png(const string &where);
+
 void putHatOn()
 {
     //Judge which hat to select
@@ -45,23 +48,37 @@ void putHatOn()
     }
     Point2f srcBeginPoint(stof(resBuf[0]), stof(resBuf[1]));
     Point2f srcEndPoint(stof(resBuf[2]), stof(resBuf[3]));
-    CImg<unsigned char> srcHat(resBuf[4].c_str());
+    CImg<float> srcHat(resBuf[4].c_str());
+    cout << "RECOLIC_DEBUG > ";
+    for(size_t cter = 0; cter < 5; ++cter)
+        cout << resBuf[cter] << ' ';
+    cout << endl;
     //methods...
     auto getLength = [](const Point2f &pa, const Point2f &pb) -> float {return sqrt((pb.y-pa.y)*(pb.y-pa.y) + (pb.x-pa.x)*(pb.x-pa.x));};
     auto getk = [](const Point2f &pa, const Point2f &pb) -> float {return (pa.y - pb.y)/(pa.x - pb.x);};
     auto getMiddlePoint = [](const Point2f &pa, const Point2f &pb) -> Point2f {return Point2f((pa.x+pb.x)/2, (pa.y+pb.y)/2);};
+    auto printPoint = [](const Point2f &toPrint) {cout << '(' << toPrint.x << ',' << toPrint.y << ')'; };
     float rateToMulti = getLength(analyseResult.bottomLine.lineBegin, analyseResult.bottomLine.lineEnd) / getLength(srcBeginPoint, srcEndPoint);
+    cout << "RECOLIC_DEBUG > rate=" << rateToMulti << "srcHat.width=" << srcHat.width() << ",height=" << srcHat.height() << endl;
     srcHat.resize(srcHat.width()*rateToMulti, srcHat.height()*rateToMulti);
+    srcBeginPoint.x *= rateToMulti;srcBeginPoint.y *= rateToMulti;srcEndPoint.x *= rateToMulti;srcEndPoint.y *= rateToMulti;
     float ksrc = getk(srcBeginPoint, srcEndPoint);
+    cout << "RECOLIC_DEBUG > ksrc=" << ksrc << " k=" << k << endl;
     float angleSrc = atan(ksrc);
     float angleDst = atan(k);
     float originHeight = srcHat.height();
-    float offsetAngle = angleDst - angleSrc;
-    srcHat.rotate(offsetAngle);
+    float offsetAngle = (angleDst - angleSrc);
+    cout << "RECOLIC_DEBUG > offsetAngle=" << offsetAngle << endl;
+    srcHat.display();
+    srcHat.rotate(offsetAngle*57.29578);
     if(srcBeginPoint.x > srcEndPoint.x)
         swap(srcBeginPoint, srcEndPoint);
     float sinAngle = sin(offsetAngle), cosAngle = cos(offsetAngle);
     Point2f newSrcBeginPoint(originHeight*sinAngle + srcBeginPoint.x*cosAngle - srcBeginPoint.y*sinAngle, srcBeginPoint.x*sinAngle + srcBeginPoint.y*cosAngle);
+    cout << "RECOLIC_DEBUG > new point:";
+    printPoint(newSrcBeginPoint);
+    cout << "old src is ";
+    printPoint(srcBeginPoint); cout << endl;
     Point2f offsetPointArrow(analyseResult.bottomLine.lineBegin.x - newSrcBeginPoint.x, analyseResult.bottomLine.lineBegin.y - newSrcBeginPoint.y);
     srcHat.display();
     cout << "RECOLIC_DEBUG > Drawing at " << offsetPointArrow.x << ',' << offsetPointArrow.y << endl;
@@ -91,4 +108,5 @@ std::vector<std::string> DivideString(const std::string &tod, const char divider
 	sbuf.push_back(tod.substr(lastPos + 1));
 	return sbuf;
 }
-#endif // PUT_HAT_ON_HPP_INCLUDED
+
+#endif

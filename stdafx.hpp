@@ -1,4 +1,4 @@
-#pragma once
+
 #ifndef STDAFX_HPP_INCLUDED
 #define STDAFX_HPP_INCLUDED
 #if defined(_MSC_VER) || defined(WIN32)  || defined(_WIN32) || defined(__WIN32__) \
@@ -6,6 +6,7 @@
 #error Platform Error: Microsoft Windows detected.
 #endif
 #include "CImgDir/CImg.h"
+#define cimg_use_jpeg
 #include <opencv2/core.hpp>
 #include <array>
 using std::array;

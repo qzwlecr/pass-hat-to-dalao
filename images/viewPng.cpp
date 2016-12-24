@@ -3,6 +3,6 @@
 using namespace cimg_library;
 int main(int, char **args)
 {
-	CImg<unsigned char> img(args[1]);
+	CImg<unsigned int> img(args[1]);
 	img.display();
 }
